@@ -11,14 +11,6 @@ r_colors <- rgb(t(col2rgb(colors()) / 255))
 names(r_colors) <- colors()
 projectPath = getwd()
 
-# heatmap_param_choices = c(
-#   "Minimum Dissolved Oxygen",
-#   "Temperature, water",
-#   "pH",
-#   "DO-temperature habitat profile width"
-# )
-# names(heatmap_param_choices) = c("Dissolved oxygen", "Temperature", "pH", "DO/temperature lens")
-
 ui <- fluidPage(
   tags$head(
     tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.contentWindow.min.js",
@@ -28,13 +20,6 @@ ui <- fluidPage(
   # Header
   titlePanel("EAS 501.19 Advanced Geovisualization Final Project"),
   helpText("Gelman 1,4-Dioxane Plume Groundwater Contaminant Profile"),
-  
-  # headerPanel(
-  #   title=tags$a(href='https://deq.utah.gov/division-water-quality/',tags$img(src='deq_dwq_logo_draft.png', height = 125, width = 100*2.85*1.75), target="_blank"),
-  #   tags$head(tags$link(rel = "icon", type = "image/png", href = "dwq_logo_small.png"), windowTitle="Lake profile dashboard")
-  # ),
-  
-  #,
   
   # Input widgets
   fluidRow(
