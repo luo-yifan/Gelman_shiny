@@ -1,0 +1,55 @@
+library(shiny)
+library(ggthemes)
+library(maps)
+library(ggplot2)
+library(dplyr)
+
+monthStart <- function(x) {
+    x <- as.POSIXlt(x)
+    x$mday <- 1
+    as.Date(x)
+}
+
+map_data <- read.csv(file = "./pixel_all.csv")
+map_data = data.frame(map_data)
+
+
+ui <- fluidPage(
+    sidebarLayout(
+        sidebarPanel(
+            sliderInput(inputId = "distribution", 
+                        label = "Dates:",
+                        min = as.Date("1986-01-01","%Y-%m-%d"),
+                        max = as.Date("1996-01-01","%Y-%m-%d"),
+                        value = as.Date("1986-01-01"), timeFormat="%Y-%m-%d", 
+                        step = 1,
+                        animate = animationOptions(interval = 1800))),
+        
+        mainPanel(plotOutput(outputId = "map", height = "70vh"))))
+
+server <- function(input, output){
+    output$map <- renderPlot({
+        ggplot( map_data %>%
+                    filter(Date==as.Date("1986-02-01","%Y-%m-%d")) , aes(RowNum, ColNum)) +
+            geom_tile(aes(fill = Conc), colour = "white") +
+            scale_fill_gradient(low = "#f3da4c", high = "blue", breaks = seq(0, 13, 2)) +
+            labs(x = "RowNum", y = "ColNum", fill = "Freq of Online Access") +
+            ggtitle("Peak Hours of Studying Online (Local Time)")
+    })
+    
+    # output$map <- renderPlot({
+    #     
+    #     map_data %>% 
+    #         filter(Date==as.Date("1986-02-01","%Y-%m-%d"))%>%
+    #         ggplot() +
+    #         borders("world", colour = "gray90", fill = "gray85") +
+    #         theme_map() + 
+    #         geom_point(aes(x = RowNum , y =  ColNum, size = Conc), 
+    #                    colour = "#351C4D", alpha = 0.55) +
+    #         labs(size = "Users") + 
+    #         ggtitle("Distribution of Users Online") 
+    # })
+
+}
+
+shinyApp(ui = ui, server = server)
