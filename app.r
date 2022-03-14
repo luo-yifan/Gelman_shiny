@@ -57,7 +57,6 @@ ui <- fluidPage(
                  fluidRow(
                    column(
                      8,
-                     uiOutput("date_slider"),
                      conditionalPanel(condition = TRUE,
                                       plotlyOutput("ggPlot"))
                      
@@ -299,19 +298,6 @@ server <- function(input, output, session) {
                 "Profile date:",
                 reactive_objects$profile_dates)
   })
-  output$date_slider <- renderUI({
-    req(reactive_objects$profile_dates)
-    date_min = min(reactive_objects$profile_dates)
-    date_max = max(reactive_objects$profile_dates)
-    date_max = as.Date("2026-01-01")
-    sliderInput(
-      "date_slider",
-      "Date range:",
-      min = date_min,
-      max = date_max,
-      value = c(date_min, date_max)
-    )
-  })
   
   # Generate selected aid
   observe({
@@ -321,10 +307,9 @@ server <- function(input, output, session) {
   })
   # Extract profile assessments & profiles_wide for selected site
   observe({
-    req(reactive_objects$sel_mlid, input$date_slider)
-    selected_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$Well_Name == reactive_objects$sel_mlid &
-                                                   wells_ind_prof_asmnts$ActivityStartDate >= input$date_slider[1] &
-                                                   wells_ind_prof_asmnts$ActivityStartDate <= input$date_slider[2]
+    req(reactive_objects$sel_mlid)
+    selected_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$Well_Name == reactive_objects$sel_mlid 
+
                                                  ,]
     selected_prof_asmnts = selected_prof_asmnts[order(selected_prof_asmnts$ActivityStartDate),]
     reactive_objects$selected_prof_asmnts = selected_prof_asmnts
@@ -332,25 +317,22 @@ server <- function(input, output, session) {
     
     
     
-    selected_rec_txt = rec_txt[rec_txt$WellName == gsub(" ", "-", reactive_objects$sel_mlid)  &
-                                 rec_txt$Date >= input$date_slider[1] &
-                                 rec_txt$Date <= input$date_slider[2]
+    selected_rec_txt = rec_txt[rec_txt$WellName == gsub(" ", "-", reactive_objects$sel_mlid)  
+                                
                                ,]
     selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
     reactive_objects$selected_rec_txt = selected_rec_txt
     
     
     
-    selected_predict_simple = predict_simple[predict_simple$WellName == reactive_objects$sel_mlid  &
-                                               predict_simple$Date >= input$date_slider[1] &
-                                               predict_simple$Date <= input$date_slider[2]
+    selected_predict_simple = predict_simple[predict_simple$WellName == reactive_objects$sel_mlid  
+                                     
                                              ,]
     selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
     reactive_objects$selected_predict_simple = selected_predict_simple
     
-    selected_predict_simple_rec = predict_simple_rec[predict_simple_rec$WellName == reactive_objects$sel_mlid  &
-                                                       predict_simple_rec$Date >= input$date_slider[1] &
-                                                       predict_simple_rec$Date <= input$date_slider[2]
+    selected_predict_simple_rec = predict_simple_rec[predict_simple_rec$WellName == reactive_objects$sel_mlid  
+                                                      
                                                      ,]
     selected_predict_simple_rec = selected_predict_simple_rec[order(selected_predict_simple$Date),]
     reactive_objects$selected_predict_simple_rec = selected_predict_simple_rec
@@ -367,11 +349,14 @@ server <- function(input, output, session) {
     )
     
     ori_data$Type = "ori"
-    total_data <- rbind(rec_txt, predict_simple_rec)
-    total_data <- rbind(total_data, ori_data)
-    total_data <- rbind(total_data, predict_rm5_rec)
-    total_data <- rbind(total_data, predict_rm5)
-    total_data <- rbind(total_data, predict_simple)
+    # total_data <- rbind(rec_txt, predict_simple_rec)
+    # total_data <- rbind(total_data, ori_data)
+    # total_data <- rbind(total_data, predict_rm5_rec)
+    # total_data <- rbind(total_data, predict_rm5)
+    # total_data <- rbind(total_data, predict_simple)
+    
+    total_data <- rbind(ori_data, predict_simple)
+    
     total_data = total_data[total_data$WellName == reactive_objects$sel_mlid, ]
     reactive_objects$selected_rbinded = total_data
   })
@@ -405,6 +390,6 @@ shinyApp(ui = ui, server = server)
 # rsconnect::setAccountInfo(name='yifanluo',
 #                           token='801F6411CB4C8EFD33298155AE6A8725',
 #                           secret='0B0CMhurDaBk0BtwqUEx+VxVguLFT+9yt4VYzwx2')
-#
+# 
 # library(rsconnect)
 # rsconnect::deployApp()

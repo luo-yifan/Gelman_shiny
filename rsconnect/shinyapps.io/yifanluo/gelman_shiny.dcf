@@ -5,10 +5,10 @@ account: yifanluo
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5300323
-bundleId: 5386493
+bundleId: 5680239
 url: https://yifanluo.shinyapps.io/gelman_shiny/
-when: 1639780977.0706
-lastSyncTime: 1639780977.07061
+when: 1647241756.13628
+lastSyncTime: 1647241756.1363
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: user_guide/.DS_Store
+ignoredFiles: test/.DS_Store|test/app.R|user_guide/.DS_Store
