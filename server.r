@@ -238,7 +238,7 @@ server <- function(input, output, session) {
     
     
     
-    selected_rec_txt = rec_txt[rec_txt$WellName == gsub(" ", "-", reactive_objects$sel_mlid)
+    selected_rec_txt = rec_txt[rec_txt$WellName ==  reactive_objects$sel_mlid
                                
                                , ]
     selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date), ]
@@ -270,13 +270,11 @@ server <- function(input, output, session) {
     )
     
     ori_data$Type = "ori"
-    # total_data <- rbind(rec_txt, predict_simple_rec)
-    # total_data <- rbind(total_data, ori_data)
-    # total_data <- rbind(total_data, predict_rm5_rec)
-    # total_data <- rbind(total_data, predict_rm5)
-    # total_data <- rbind(total_data, predict_simple)
-    
-    total_data <- rbind(ori_data, predict_simple)
+    total_data <- rbind(rec_txt, predict_simple_rec)
+    total_data <- rbind(total_data, ori_data)
+    total_data <- rbind(total_data, predict_rm5_rec)
+    total_data <- rbind(total_data, predict_rm5)
+    total_data <- rbind(total_data, predict_simple)
     
     total_data = total_data[total_data$WellName == reactive_objects$sel_mlid,]
     reactive_objects$selected_rbinded = total_data
@@ -293,7 +291,19 @@ server <- function(input, output, session) {
     date_time = format(input$slider, "%Y%m")
     imgPath = paste(projectPath, "/data/tif/Conc.", date_time, ".tif", sep = "")
     r <- raster(imgPath)
-    # pal <- colorQuantile("Blues", c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000), n = 10,na.color = "transparent")
+    color_t = rev(c('#152814',
+                       '#33481C',
+                        '#696C21',
+                        '#956720',
+                        '#C2361C',
+                        '#CA382D',
+                        '#D13F42',
+                        '#D85160',
+                        '#DE647C',
+                        '#E47796',
+                        '#EA8AAE'))
+    # pal <- colorBin("Blues", c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000), bins = 15,pretty = FALSE,na.color = "transparent")
+    pal <- colorQuantile(color_t, c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000), n = 11,na.color = "transparent")
     # 
     # pal = colorBin(
     #   #palette = "BuPu"
@@ -301,8 +311,8 @@ server <- function(input, output, session) {
     #   , c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000)
     #   , bins = 10
     # )
-    pal <-
-      colorNumeric(c("#FFFFFF", "#FF7F27", "#FC0505"), values(r),na.color = "transparent")
+    # pal <-
+    #   colorNumeric(c("#FFFFFF", "#FF7F27", "#FC0505"), values(r),na.color = "transparent")
     # pal <-
     #   colorNumeric(rev(c('#152814',
     #    '#33481C',
@@ -321,13 +331,20 @@ server <- function(input, output, session) {
                        options = providerTileOptions(noWrap = TRUE)) %>%
       addRasterImage(r,
                      colors = pal,
-                     opacity = 0.5,
+                     opacity = 0.8,
                      maxBytes = 123123123) %>%
       setView(lng = -83.792,
               lat = 42.284,
               zoom = 14) %>%
-      addLegend(pal = pal,
-                values = values(r),
+      addLegend("bottomright", 
+                colors =color_t,
+                labels= c('<4' , '4-7.2' , '7.2-85' , '85-150' , '150-280' , '280-500' , '500-1000' , '1000-1900' ,'1900-3000','3000-5000','>5000'),
                 opacity = 1)
+      # addLegend(pal = pal,
+      #           values = c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000),
+      #           opacity = 1,labFormat = labelFormat(
+      #             prefix = "(", suffix = ")%", between = ", ",
+      #             transform = function(r) 10000 * r
+      #           ))
   })
 }
