@@ -10,8 +10,8 @@ ui <- fluidPage(
   ),
   
   # Header
-  titlePanel("EAS 501.19 Advanced Geovisualization Final Project"),
-  helpText("Gelman 1,4-Dioxane Plume Groundwater Contaminant Profile"),
+  titlePanel("Gelman Site Groundwater Contamination Plume Movement Modelling and Prediction"),
+  helpText("Yifan Luo's SEAS Capstone Project"),
   fluidRow(
     column(
       12,
@@ -25,7 +25,7 @@ ui <- fluidPage(
                    column(
                      5,
                      
-                     conditionalPanel(condition = "input.plot_tabs!='User guide' && input.plot_tabs!='GeoTif'",
+                     conditionalPanel(condition = "input.plot_tabs!='User guide' && input.plot_tabs!='Spatial movement'",
                                       tabsetPanel(
                                         id = "ui_tab",
                                         tabPanel("Map",
@@ -45,9 +45,9 @@ ui <- fluidPage(
                                                    div(DT::dataTableOutput("table_input"), style = "font-size:70%")
                                                  ))
                                       )),
+                     conditionalPanel(condition = "input.plot_tabs=='Spatial movement'", column(12)),
                      conditionalPanel(condition = "input.plot_tabs=='User guide'",
-                                      column(12)),
-                     conditionalPanel(condition = "input.plot_tabs=='GeoTif'", column(12))
+                                      column(12))
                    ),
                    column(
                      7,
@@ -67,12 +67,7 @@ ui <- fluidPage(
                  )
                  
         ),
-        tabPanel("User guide",
-                 fluidRow(column(
-                   8,
-                   includeMarkdown('./user_guide/user_guide.rmd')
-                 ))),
-        tabPanel("GeoTif",
+        tabPanel("Spatial movement",
                  fluidRow(
                    column(
                      8,
@@ -87,7 +82,12 @@ ui <- fluidPage(
                        timeFormat = "%Y-%m"
                      )
                    )
-                 ))
+                 )),
+        tabPanel("User guide",
+                 fluidRow(column(
+                   8,
+                   includeMarkdown('./user_guide/user_guide.rmd')
+                 )))
         )
       )
     )

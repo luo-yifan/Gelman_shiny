@@ -109,7 +109,7 @@ server <- function(input, output, session) {
     read.csv(file = "./data/all_predict_data.csv")
   predict_simple = unique(predict_simple_raw[, c("WellName", "Date", "Concentration")])
   predict_simple$Date = as.Date(predict_simple$Date, format = '%Y-%m-%d')
-  predict_simple$Type = 'pred'
+  predict_simple$Type = 'Predicting values'
   predict_simple = data.frame(predict_simple)
   
   predict_simple_rec_raw <-
@@ -269,12 +269,14 @@ server <- function(input, output, session) {
       )
     )
     
-    ori_data$Type = "ori"
-    total_data <- rbind(rec_txt, predict_simple_rec)
-    total_data <- rbind(total_data, ori_data)
-    total_data <- rbind(total_data, predict_rm5_rec)
-    total_data <- rbind(total_data, predict_rm5)
-    total_data <- rbind(total_data, predict_simple)
+    ori_data$Type = "Historical records"
+    total_data <- rbind(ori_data, predict_simple)
+    
+    # total_data <- rbind(rec_txt, predict_simple_rec)
+    # total_data <- rbind(total_data, ori_data)
+    # total_data <- rbind(total_data, predict_rm5_rec)
+    # total_data <- rbind(total_data, predict_rm5)
+    # total_data <- rbind(total_data, predict_simple)
     
     total_data = total_data[total_data$WellName == reactive_objects$sel_mlid,]
     reactive_objects$selected_rbinded = total_data
