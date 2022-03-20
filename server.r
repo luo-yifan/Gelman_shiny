@@ -53,7 +53,7 @@ server <- function(input, output, session) {
                                          sep = "_")
   wells_long = data.frame(wells_long)
   
-  wells = wells[wells$MonitoringLocationIdentifier %in% wells_long$MonitoringLocationIdentifier, ]
+  wells = wells[wells$MonitoringLocationIdentifier %in% wells_long$MonitoringLocationIdentifier,]
   wells = data.frame(wells)
   
   wells_ind_prof_asmnts = unique(gelman_data[, c("Bore", "SampleDate", "Value", "lat", "lon")])
@@ -78,7 +78,7 @@ server <- function(input, output, session) {
     )
   
   wells_ind_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$ActivityIdentifier
-                                                %in% wells_long$ActivityIdentifier, ]
+                                                %in% wells_long$ActivityIdentifier,]
   wells_ind_prof_asmnts$Well_Name = wells_ind_prof_asmnts$MonitoringLocationIdentifier
   wells_ind_prof_asmnts = plyr::rename(wells_ind_prof_asmnts, c("Value" =
                                                                   "do_pct_exc"))
@@ -196,7 +196,7 @@ server <- function(input, output, session) {
   observe({
     req(reactive_objects$sel_mlid)
     reactive_objects$sel_profiles = wells_long[wells_long$MonitoringLocationIdentifier ==
-                                                 reactive_objects$sel_mlid, ]
+                                                 reactive_objects$sel_mlid,]
     profile_dates = unique(reactive_objects$sel_profiles$ActivityStartDate)
     profile_dates = profile_dates[order(profile_dates)]
     reactive_objects$profile_dates = profile_dates
@@ -231,8 +231,8 @@ server <- function(input, output, session) {
     req(reactive_objects$sel_mlid)
     selected_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$Well_Name == reactive_objects$sel_mlid
                                                  
-                                                 , ]
-    selected_prof_asmnts = selected_prof_asmnts[order(selected_prof_asmnts$ActivityStartDate), ]
+                                                 ,]
+    selected_prof_asmnts = selected_prof_asmnts[order(selected_prof_asmnts$ActivityStartDate),]
     reactive_objects$selected_prof_asmnts = selected_prof_asmnts
     
     
@@ -240,22 +240,22 @@ server <- function(input, output, session) {
     
     selected_rec_txt = rec_txt[rec_txt$WellName ==  reactive_objects$sel_mlid
                                
-                               , ]
-    selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date), ]
+                               ,]
+    selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
     reactive_objects$selected_rec_txt = selected_rec_txt
     
     
     
     selected_predict_simple = predict_simple[predict_simple$WellName == reactive_objects$sel_mlid
                                              
-                                             , ]
-    selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date), ]
+                                             ,]
+    selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
     reactive_objects$selected_predict_simple = selected_predict_simple
     
     selected_predict_simple_rec = predict_simple_rec[predict_simple_rec$WellName == reactive_objects$sel_mlid
                                                      
-                                                     , ]
-    selected_predict_simple_rec = selected_predict_simple_rec[order(selected_predict_simple$Date), ]
+                                                     ,]
+    selected_predict_simple_rec = selected_predict_simple_rec[order(selected_predict_simple$Date),]
     reactive_objects$selected_predict_simple_rec = selected_predict_simple_rec
     
     
@@ -278,7 +278,7 @@ server <- function(input, output, session) {
     # total_data <- rbind(total_data, predict_rm5)
     # total_data <- rbind(total_data, predict_simple)
     
-    total_data = total_data[total_data$WellName == reactive_objects$sel_mlid,]
+    total_data = total_data[total_data$WellName == reactive_objects$sel_mlid, ]
     reactive_objects$selected_rbinded = total_data
   })
   
@@ -293,41 +293,30 @@ server <- function(input, output, session) {
     date_time = format(input$slider, "%Y%m")
     imgPath = paste(projectPath, "/data/tif/Conc.", date_time, ".tif", sep = "")
     r <- raster(imgPath)
-    color_t = rev(c('#152814',
-                       '#33481C',
-                        '#696C21',
-                        '#956720',
-                        '#C2361C',
-                        '#CA382D',
-                        '#D13F42',
-                        '#D85160',
-                        '#DE647C',
-                        '#E47796',
-                        '#EA8AAE'))
-    # pal <- colorBin("Blues", c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000), bins = 15,pretty = FALSE,na.color = "transparent")
-    pal <- colorQuantile(color_t, c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000, 3000000), n = 12,na.color = "transparent")
-    # 
-    # pal = colorBin(
-    #   #palette = "BuPu"
-    #   palette = "Blues"
-    #   , c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000)
-    #   , bins = 10
-    # )
-    # pal <-
-    #   colorNumeric(c("#FFFFFF", "#FF7F27", "#FC0505"), values(r),na.color = "transparent")
-    # pal <-
-    #   colorNumeric(rev(c('#152814',
-    #    '#33481C',
-    #     '#696C21',
-    #     '#956720',
-    #     '#C2361C',
-    #     '#CA382D',
-    #     '#D13F42',
-    #     '#D85160',
-    #     '#DE647C',
-    #     '#E47796',
-    #     '#EA8AAE')), c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000),
-    #                na.color = "transparent")
+    color_t = rev(
+      c(
+        '#152814',
+        '#33481C',
+        '#696C21',
+        '#956720',
+        '#C2361C',
+        '#CA382D',
+        '#D13F42',
+        '#D85160',
+        '#DE647C',
+        '#E47796',
+        '#EA8AAE'
+      )
+    )
+    
+    pal <-
+      colorQuantile(
+        color_t,
+        c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 , 3000, 5000, 3000000),
+        n = 12,
+        na.color = "transparent"
+      )
+    
     leaflet() %>%
       addProviderTiles(providers$Esri.WorldTopoMap,
                        options = providerTileOptions(noWrap = TRUE)) %>%
@@ -338,15 +327,23 @@ server <- function(input, output, session) {
       setView(lng = -83.792,
               lat = 42.284,
               zoom = 14) %>%
-      addLegend("bottomright", 
-                colors =color_t,
-                labels= c('<4' , '4-7.2' , '7.2-85' , '85-150' , '150-280' , '280-500' , '500-1000' , '1000-1900' ,'1900-3000','3000-5000','>5000'),
-                opacity = 0.8)
-      # addLegend(pal = pal,
-      #           values = c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000),
-      #           opacity = 1,labFormat = labelFormat(
-      #             prefix = "(", suffix = ")%", between = ", ",
-      #             transform = function(r) 10000 * r
-      #           ))
+      addLegend(
+        "bottomright",
+        colors = color_t,
+        labels = c(
+          '<4' ,
+          '4-7.2' ,
+          '7.2-85' ,
+          '85-150' ,
+          '150-280' ,
+          '280-500' ,
+          '500-1000' ,
+          '1000-1900' ,
+          '1900-3000',
+          '3000-5000',
+          '>5000'
+        ),
+        opacity = 0.8
+      )
   })
 }
