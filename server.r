@@ -102,34 +102,34 @@ server <- function(input, output, session) {
   rec_txt_raw <- read.csv(file = "./data/all_data_rec.csv")
   rec_txt = unique(rec_txt_raw[, c("WellName", "Date", "Concentration")])
   rec_txt$Date = as.Date(rec_txt$Date, format = '%Y-%m-%d')
-  rec_txt$Type = 'rec_ori'
+  rec_txt$Type = 'RF interpolation'
   rec_txt = data.frame(rec_txt)
   
   predict_simple_raw <-
     read.csv(file = "./data/all_predict_data.csv")
   predict_simple = unique(predict_simple_raw[, c("WellName", "Date", "Concentration")])
   predict_simple$Date = as.Date(predict_simple$Date, format = '%Y-%m-%d')
-  predict_simple$Type = 'Predicting values'
+  predict_simple$Type = 'Raw prediction'
   predict_simple = data.frame(predict_simple)
   
   predict_simple_rec_raw <-
     read.csv(file = "./data/all_predict_data_rec.csv")
   predict_simple_rec = unique(predict_simple_rec_raw[, c("WellName", "Date", "Concentration")])
   predict_simple_rec$Date = as.Date(predict_simple_rec$Date, format = '%Y-%m-%d')
-  predict_simple_rec$Type = 'pred_rec'
+  predict_simple_rec$Type = 'RF prediction'
   predict_simple_rec = data.frame(predict_simple_rec)
   
   predict_rm5_rec_raw <-
     read.csv(file = "./data/rm5_predict_data_rec.csv")
   predict_rm5_rec = unique(predict_rm5_rec_raw[, c("WellName", "Date", "Concentration")])
   predict_rm5_rec$Date = as.Date(predict_rm5_rec$Date, format = '%Y-%m-%d')
-  predict_rm5_rec$Type = 'pred_rec_rm5'
+  predict_rm5_rec$Type = 'RF predict validation'
   predict_rm5_rec = data.frame(predict_rm5_rec)
   
   predict_rm5_raw <- read.csv(file = "./data/rm5_predict_data.csv")
   predict_rm5 = unique(predict_rm5_raw[, c("WellName", "Date", "Concentration")])
   predict_rm5$Date = as.Date(predict_rm5$Date, format = '%Y-%m-%d')
-  predict_rm5$Type = 'pred_rm5'
+  predict_rm5$Type = 'Raw predict validation'
   predict_rm5 = data.frame(predict_rm5)
   
   # Empty reactive values object
@@ -270,13 +270,13 @@ server <- function(input, output, session) {
     )
     
     ori_data$Type = "Historical records"
-    total_data <- rbind(ori_data, predict_simple)
+    # total_data <- rbind(ori_data, predict_simple)
     
-    # total_data <- rbind(rec_txt, predict_simple_rec)
-    # total_data <- rbind(total_data, ori_data)
-    # total_data <- rbind(total_data, predict_rm5_rec)
-    # total_data <- rbind(total_data, predict_rm5)
-    # total_data <- rbind(total_data, predict_simple)
+    total_data <- rbind(rec_txt, predict_simple_rec)
+    total_data <- rbind(total_data, ori_data)
+    total_data <- rbind(total_data, predict_rm5_rec)
+    total_data <- rbind(total_data, predict_rm5)
+    total_data <- rbind(total_data, predict_simple)
     
     total_data = total_data[total_data$WellName == reactive_objects$sel_mlid, ]
     reactive_objects$selected_rbinded = total_data
