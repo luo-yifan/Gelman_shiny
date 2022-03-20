@@ -303,7 +303,7 @@ server <- function(input, output, session) {
                         '#E47796',
                         '#EA8AAE'))
     # pal <- colorBin("Blues", c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000), bins = 15,pretty = FALSE,na.color = "transparent")
-    pal <- colorQuantile(color_t, c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000), n = 11,na.color = "transparent")
+    pal <- colorQuantile(color_t, c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000, 3000000), n = 12,na.color = "transparent")
     # 
     # pal = colorBin(
     #   #palette = "BuPu"
@@ -339,7 +339,7 @@ server <- function(input, output, session) {
       addLegend("bottomright", 
                 colors =color_t,
                 labels= c('<4' , '4-7.2' , '7.2-85' , '85-150' , '150-280' , '280-500' , '500-1000' , '1000-1900' ,'1900-3000','3000-5000','>5000'),
-                opacity = 1)
+                opacity = 0.8)
       # addLegend(pal = pal,
       #           values = c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 ,3000,5000),
       #           opacity = 1,labFormat = labelFormat(
