@@ -308,25 +308,26 @@ output$mymap <- renderLeaflet({
   r <- raster(imgPath)
   color_t = rev(
     c(
-      '#152814',
-      '#33481C',
-      '#696C21',
-      '#956720',
-      '#C2361C',
-      '#CA382D',
-      '#D13F42',
-      '#D85160',
-      '#DE647C',
-      '#E47796',
-      '#EA8AAE'
+      '#03071E',
+      '#370617',
+      '#6A040F',
+      '#9D0208',
+      '#D00000',
+      '#DC2F02',
+      '#E85D04',
+      '#F48C06',
+      '#FAA307',
+      '#FFBA08',
+      '#FFB950',
+      '#ffea00'
     )
   )
   
   pal <-
     colorQuantile(
       color_t,
-      c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 , 3000, 5000, 3000000),
-      n = 12,
+      c(1, 4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 , 3000, 5000, 3000000),
+      n = 13,
       na.color = "transparent"
     )
   
@@ -344,7 +345,8 @@ output$mymap <- renderLeaflet({
       "bottomright",
       colors = color_t,
       labels = c(
-        '<4' ,
+        '<1' ,
+        '1-4' ,
         '4-7.2' ,
         '7.2-85' ,
         '85-150' ,

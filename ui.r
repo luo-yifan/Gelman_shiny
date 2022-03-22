@@ -77,8 +77,8 @@ ui <- fluidPage(
                        "slider",
                        "Dates:",
                        min = as.Date("1986-02-01", "%Y-%m-%d"),
-                       max = as.Date("2022-11-01", "%Y-%m-%d"),
-                       value = as.Date("2016-12-01"),
+                       max = as.Date("2025-12-31", "%Y-%m-%d"),
+                       value = as.Date("2020-11-01"),
                        timeFormat = "%Y-%m"
                      )
                    )
