@@ -295,15 +295,15 @@ output$ggPlot = renderPlotly({
   ggplot(reactive_objects$selected_rbinded,
          aes(Date, Concentration)) +
     geom_point(aes(colour = factor(Type)), show.legend = FALSE)+
-    geom_hline(yintercept=1, linetype="dashed", color = "red")+
-    geom_hline(yintercept=4, linetype="dashed", color = "red")+
-    geom_hline(yintercept=7.2, linetype="dashed", color = "red")+
-    geom_hline(yintercept=85, linetype="dashed", color = "red")+
+    geom_hline(yintercept=1, size = 0.5, linetype="dashed", color = "grey80")+
+    geom_hline(yintercept=4, size = 0.5, linetype="dashed", color = "grey60")+
+    geom_hline(yintercept=7.2, size = 0.5, linetype="dashed", color = "grey40")+
+    geom_hline(yintercept=85, size = 0.5, linetype="dashed", color = "grey20")+
     scale_y_continuous(limits =c(0, max(1.0,max(reactive_objects$selected_rbinded$Concentration))))
 })
 
 output$mymap <- renderLeaflet({
-  date_time = format(input$slider, "%Y%m")
+  date_time = format(input$animation, "%Y%m")
   imgPath = paste(projectPath, "/data/tif/Conc.", date_time, ".tif", sep = "")
   r <- raster(imgPath)
   color_t = rev(
@@ -326,8 +326,8 @@ output$mymap <- renderLeaflet({
   pal <-
     colorQuantile(
       color_t,
-      c(1, 4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 , 3000, 5000, 3000000),
-      n = 13,
+      c(1, 4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 , 3000, 5000),
+      n = 12,
       na.color = "transparent"
     )
   
@@ -338,9 +338,15 @@ output$mymap <- renderLeaflet({
                    colors = pal,
                    opacity = 0.8,
                    maxBytes = 123123123) %>%
+    # addPolygons(r,
+    #             lng = long,
+    #             lat = lat,
+    #             color = "#03F",
+    #             weight = 5,
+    #             opacity = 0.5) %>%
     setView(lng = -83.792,
             lat = 42.284,
-            zoom = 14) %>%
+            zoom = 13) %>%
     addLegend(
       "bottomright",
       colors = color_t,
