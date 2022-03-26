@@ -3,6 +3,8 @@ library(plotly)
 library(leaflet)
 library(raster)
 
+choices_month <- format(seq.Date(from = as.Date("1986-02-01"), by = "month", length.out = 468), "%Y-%m")
+
 ui <- fluidPage(
   tags$head(
     tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.contentWindow.min.js",
@@ -73,16 +75,14 @@ ui <- fluidPage(
                      8,
                      leafletOutput("mymap"),
                      p(),
-                     sliderInput(
-                       "animation",
-                       "Dates:",
-                       min = as.Date("1986-02-01", "%Y-%m-%d"),
-                       max = as.Date("2025-12-31", "%Y-%m-%d"),
-                       value = as.Date("2000-01-01"),
-                       timeFormat = "%Y-%m", 
-                       step = NULL,
-                       animate = animationOptions(interval = 1000, loop = TRUE)
-                     )
+                     # custom slider function
+                     shinyWidgets::sliderTextInput(
+                       inputId = "month_slider",
+                       label = "Dates:",
+                       choices = choices_month,
+                       selected = choices_month[120],
+                       animate = TRUE,
+                     ),
                    )
                  )),
         tabPanel("User guide",

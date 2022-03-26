@@ -303,7 +303,7 @@ output$ggPlot = renderPlotly({
 })
 
 output$mymap <- renderLeaflet({
-  date_time = format(input$animation, "%Y%m")
+  date_time = gsub('-', '', input$month_slider)
   imgPath = paste(projectPath, "/data/tif/Conc.", date_time, ".tif", sep = "")
   r <- raster(imgPath)
   color_t = rev(
@@ -326,8 +326,8 @@ output$mymap <- renderLeaflet({
   pal <-
     colorQuantile(
       color_t,
-      c(1, 4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 , 3000, 5000),
-      n = 12,
+      c(1, 4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 , 3000, 5000, 3000000),
+      n = 13,
       na.color = "transparent"
     )
   
