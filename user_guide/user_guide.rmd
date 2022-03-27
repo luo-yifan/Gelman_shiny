@@ -19,9 +19,10 @@ Source code and additional information for this application are available via th
 <br>
 
 ## Data
-All data used by this application are available through either [Scio Residents for Safe Water (SRSW) website](https://sites.google.com/site/srsworg/srsw-org/data) or [EGLE Gelman Sciences Recent Analytical Data Monitoring Well Results](https://www.michigan.gov/egle/0,9429,7-135-3311_4109_9846_30022-71616--,00.html).
+All data used by this application are available for viewing in table format or for downloading at [Scio Residents for Safe Water (SRSW) website](https://sites.google.com/site/srsworg/srsw-org/data) or [EGLE Gelman Sciences Recent Analytical Data Monitoring Well Results](https://www.michigan.gov/egle/0,9429,7-135-3311_4109_9846_30022-71616--,00.html). For more information related to this project, please see the [Gelman Sciences, Inc. Site of Contamination Information Page](https://www.michigan.gov/egle/0,9429,7-135-3311_4109_9846-71595--,00.html).
 
-Monitoring wells are used to sample the groundwater elevations to help determine groundwater flow direction, and monitor the levels of dioxane in the water. The monitoring wells at the Gelman site are tested monthly, quarterly, twice a year or once a year depending on their location. Gelman conducts the sampling and testing of the OVER 250 monitoring wells following Michigan Department of Environment, Great Lakes and Energy (EGLE) approved sampling plans. EGLE samples selected wells with Gelman on a quarterly basis and submits the samples to the EGLE Laboratory for analysis.
+Monitoring wells are used to sample the groundwater elevations to help determine groundwater flow direction, and monitor the levels of dioxane in the water. The monitoring wells at the Gelman site are tested monthly, quarterly, twice a year or once a year depending on their location. Gelman conducts the sampling and testing of the OVER 250 monitoring wells following Michigan Department of Environment, Great Lakes and Energy (EGLE) approved sampling plans. EGLE samples selected wells with Gelman on a quarterly basis and submits the samples to the EGLE Laboratory for analysis. In the state of Michigan, the Residential Drinking Water Criterion was set to 85 parts per billion (ppb), one of the highest standards in the country (MDEQ, 2000). After new EPA data about dioxane came out in 2010, the Michigan Department of Environmental Quality (MDEQ) proposed a generic residential cleanup criteria for drinking water for 1,4-dioxane of 7.2 ppb based on 1 in 100,000 additional cancer risk in 2016. However, several of these wells continue to exceed the revised Michigan standard by more than 1,000 ppb so far, with the sampled five-year highest concentration of 19,000 ppb from well MW-5d on Oct 5, 2017.
+
 
 The determination of 1,4-dioxane concentration in drinking water is carried out following US EPA Method 522, by using solid phase extraction (SPE) and gas chromatography/mass spectrometry (GC/MS) with selected ion monitoring (SIM) (Chiang et al., 2016). Method 522 was adapted as the analytical method for dioxane analyses under UCMR3. It is worth noting that this method does not require correction for the recovery rate as well, although the rates are generally much higher than with Method 8270.
 <br>
@@ -35,7 +36,8 @@ Depth: Boring depth measured in feet height below ground level (bgl). Bored well
 
 Elevation: Top of Casing (TOC) elevation measured in feet height above mean sea level (amsl). The casing is a tube in the ground that houses the well pump and the pipe that moves water from the pump to the surface.
 
-1,4-dioxane concentration: measured in parts per billion (ppb), and the detectable level for 1,4-dioxane is 1 ppb. The EPA defined a concentration of 0.35 ppb. as the amount of the chemical in water is expected to cause no more than one additional case of cancer in every one million people who drink it for a lifetime.
+1,4-dioxane concentration: measured in parts per billion (ppb), and the detectable level for 1,4-dioxane is 1 ppb. The EPA defined a concentration of 0.35 ppb, as the amount of the chemical in water is expected to cause no more than one additional case of cancer in every one million people who drink it for a lifetime. In the state of Michigan, the Residential Drinking Water Criterion was set to 85 parts per billion (ppb), one of the highest standards in the country (MDEQ, 2000). After new EPA data about dioxane came out in 2010, the Michigan Department of Environmental Quality (MDEQ) proposed a generic residential cleanup criteria for drinking water for 1,4-dioxane of 7.2 ppb based on 1 in 100,000 additional cancer risk in 2016. However, several of these wells continue to exceed the revised Michigan standard by more than 1,000 ppb so far, with the sampled five-year highest concentration of 19,000 ppb from well MW-5d on Oct 5, 2017.
+
 <br>
 
 ## Application usage
@@ -50,12 +52,17 @@ Outputs will automatically render any time the user updates one of the input wid
 <br>
 
 ### Map elements
-Individual monitoring locations are displayed as circle markers on the map. In addition to displaying wells, well labels and polygons identifying assessment unit, beneficial use, and well-specific standard boundaries are also available. Topographic and satellite base layers are both available. 
+Individual monitoring locations are displayed as circle markers on the map. In addition to displaying well sites, well labels are also available. Topographic and satellite base map layers are both available. To turn on any of these layers, hover the mouse over the layers control box (top left of map, under zoom buttons) and select one or more layers.
 
-To turn on any of these layers, hover the mouse over the layers control box (top left of map, under zoom buttons) and select one or more layers.
+Features are searchable by well names. To search for a well, click the magnifier glass (top left of map, under the layers control box) and start typing in a street address or well name. Locations matching your search will appear as you type.  
 
-Features are searchable by well and assessment unit names or identifier codes. To search for a feature, click the magnifier glass (top left of map, under the layers control box) and start topping.
-Locations matching your search will appear as you type.  
+The Map zoom +/- buttons (represented by a plus sign and a minus sign with a gray background) at the top left corner can be used to zoom in or out of the map. Alternately, your mouse wheel also lets you zoom in and out, while left clicking and dragging lets you pan around the map.
+
+The Layers control button (represented by a stack of three squares) displays a key of the symbols used on the map. It also lets you choose which information you want to see. Click the checkbox for a layer will turn that layer on or off on the map.
+
+The Search feature button (represented by a white box) lets you search for a street address or well name. 
+
+The Measure button (represented by two rulers) at the top right corner lets you measure distances or areas between features on the map. Click the map where you want to start the measurement, and click once for every vertex of the line/area you want to measure. Double-click to complete the line/area.
 
 ![](image.png)  
 Figure 1. Map usage guide.
