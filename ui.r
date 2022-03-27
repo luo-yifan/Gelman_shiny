@@ -12,7 +12,7 @@ ui <- fluidPage(
   ),
   
   # Header
-  titlePanel("Gelman Site Groundwater Contamination Plume Movement Modelling and Prediction"),
+  titlePanel("Gelman Site Groundwater Contamination Plume Modelling and Prediction"),
   helpText("Yifan Luo's SEAS Capstone Project"),
   fluidRow(
     column(

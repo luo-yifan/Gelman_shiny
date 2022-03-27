@@ -89,8 +89,8 @@ server <- function(input, output, session) {
     wells_mlid_param_asmnts,
     c(
       "Bore" = "Well_Name",
-      "Depth2" = "Depth_feet",
-      "Elevation" = "Elevation_feet",
+      "Depth2" = "Depth",
+      "Elevation" = "Elevation",
       "lat" = "Latitude",
       "lon" = "Longtitude"
     )
@@ -101,7 +101,7 @@ server <- function(input, output, session) {
   wells_mlid_param_asmnts =
     merge(
       x = wells_mlid_param_asmnts,
-      y = well_types[ , c("Well_Name", "Well_Types")],
+      y = well_types[ , c("Well_Name", "Well_Type")],
       by = "Well_Name",
       all.x = TRUE)
 
