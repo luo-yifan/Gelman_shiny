@@ -1,6 +1,5 @@
 library(wqTools)
 library(magrittr)
-library(readxl)
 library(ggplot2)
 library(plotly)
 library(leaflet)
@@ -9,6 +8,17 @@ library(raster)
 r_colors <- rgb(t(col2rgb(colors()) / 255))
 names(r_colors) <- colors()
 projectPath = getwd()
+
+gelman_data = read.csv(file = "./data/well_data.csv")
+well_types = data.frame(read.csv(file = "./data/well_types.csv"))
+rec_txt_raw <- read.csv(file = "./data/all_data_rec.csv")
+predict_simple_raw <-
+  read.csv(file = "./data/all_predict_data.csv")
+predict_simple_rec_raw <-
+  read.csv(file = "./data/all_predict_data_rec.csv")
+predict_rm5_rec_raw <-
+  read.csv(file = "./data/rm5_predict_data_rec.csv")
+predict_rm5_raw <- read.csv(file = "./data/rm5_predict_data.csv")
 
 server <- function(input, output, session) {
   # Loading modal to keep user out of trouble while map draws...
@@ -27,7 +37,6 @@ server <- function(input, output, session) {
     removeModal()
   })
   
-  gelman_data = read.csv(file = "./data/well_data.csv")
   wells = unique(gelman_data[, c("Bore", "lat", "lon")])
   wells = plyr::rename(
     wells,
@@ -97,44 +106,35 @@ server <- function(input, output, session) {
   )
   #wells_mlid_param_asmnts$ParameterName = "Sampling Well"
   wells_mlid_param_asmnts = data.frame(wells_mlid_param_asmnts)
-  well_types = data.frame(read.csv(file = "./data/well_types.csv"))
   wells_mlid_param_asmnts =
     merge(
       x = wells_mlid_param_asmnts,
-      y = well_types[ , c("Well_Name", "Well_Type")],
+      y = well_types[ , c("Well_Name", "Well_Types")],
       by = "Well_Name",
       all.x = TRUE)
 
 #wells_mlid_param_asmnts = cbind(wells_mlid_param_asmnts$Well_Name, wells_mlid_param_asmnts)
 
-rec_txt_raw <- read.csv(file = "./data/all_data_rec.csv")
 rec_txt = unique(rec_txt_raw[, c("WellName", "Date", "Concentration")])
 rec_txt$Date = as.Date(rec_txt$Date, format = '%Y-%m-%d')
 rec_txt$Type = 'RF interpolation'
 rec_txt = data.frame(rec_txt)
 
-predict_simple_raw <-
-  read.csv(file = "./data/all_predict_data.csv")
 predict_simple = unique(predict_simple_raw[, c("WellName", "Date", "Concentration")])
 predict_simple$Date = as.Date(predict_simple$Date, format = '%Y-%m-%d')
 predict_simple$Type = 'Raw prediction'
 predict_simple = data.frame(predict_simple)
 
-predict_simple_rec_raw <-
-  read.csv(file = "./data/all_predict_data_rec.csv")
 predict_simple_rec = unique(predict_simple_rec_raw[, c("WellName", "Date", "Concentration")])
 predict_simple_rec$Date = as.Date(predict_simple_rec$Date, format = '%Y-%m-%d')
 predict_simple_rec$Type = 'RF prediction'
 predict_simple_rec = data.frame(predict_simple_rec)
 
-predict_rm5_rec_raw <-
-  read.csv(file = "./data/rm5_predict_data_rec.csv")
 predict_rm5_rec = unique(predict_rm5_rec_raw[, c("WellName", "Date", "Concentration")])
 predict_rm5_rec$Date = as.Date(predict_rm5_rec$Date, format = '%Y-%m-%d')
 predict_rm5_rec$Type = 'RF predict validation'
 predict_rm5_rec = data.frame(predict_rm5_rec)
 
-predict_rm5_raw <- read.csv(file = "./data/rm5_predict_data.csv")
 predict_rm5 = unique(predict_rm5_raw[, c("WellName", "Date", "Concentration")])
 predict_rm5$Date = as.Date(predict_rm5$Date, format = '%Y-%m-%d')
 predict_rm5$Type = 'Raw predict validation'
