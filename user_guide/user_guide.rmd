@@ -19,26 +19,22 @@ In the state of Michigan, the Residential Drinking Water Criterion was set to 85
 Monitoring wells are used to sample the groundwater elevations to help determine groundwater flow direction, and monitor the levels of dioxane in the water. The monitoring wells at the Gelman site are tested monthly, quarterly, twice a year or once a year depending on their location. Gelman conducts the sampling and testing of over 250 monitoring wells following Michigan Department of Environment, Great Lakes and Energy (EGLE) approved sampling plans. EGLE samples selected wells with Gelman on a quarterly basis and submits the samples to the EGLE Laboratory for analysis.
 
 For more information related to this project, please see [Gelman Sciences, Inc. Site of Contamination Information Page](https://www.michigan.gov/egle/0,9429,7-135-3311_4109_9846-71595--,00.html)
-
 <br>
 
 ## Introduction
 This application is designed to interactively visualize the EGLE Gelman Sciences recent analytical data and establish a platform to analyze the historical trends of dioxane concentration and estimate its future temporal and spatial change in Scio Township and the west part of the City of Ann Arbor in Washtenaw County. The goal of this application is for users to be able to view the data to better identify the areas that need additional attention and provide decision support for the administrators of drinking water safety, water environment protection, and emergency response.
 
 Source code and additional information for this application are available via the [Yifan Luo's GitHub repository](https://github.com/luo-yifan/gelman_shiny) .  
-
 <br>
 
 ## Data
 All data used by this application are available for viewing in table format or for downloading at [Scio Residents for Safe Water (SRSW) website](https://sites.google.com/site/srsworg/srsw-org/data) or [EGLE Gelman Sciences Recent Analytical Data Monitoring Well Results](https://www.michigan.gov/egle/0,9429,7-135-3311_4109_9846_30022-71616--,00.html). For more information related to this project, please see the [Gelman Sciences, Inc. Site of Contamination Information Page](https://www.michigan.gov/egle/0,9429,7-135-3311_4109_9846-71595--,00.html).
-
 <br>
 
 ## Application usage
 The application has two main inputs: a map and a table. To build plots for any individual sampling well, click on your desired well in either the map or the table. The map shows all wells with concentration data available. The table shows all of those wells and their associated geographic information and dioxane concentration. The map and table inputs are responsive to each other. When you click a well on the map, the table will automatically filter to assessments associated with that well. When you click on a row in the table, the map will automatically fly to that well location.  
 
 Output include time series plot and spatial movement animation specific will automatically render any time the user updates one of the input widgets. Several data plotting and review options are available. 
-
 <br>
 
 ### Map elements
@@ -55,13 +51,11 @@ The Measure button (represented by two rulers) at the top right corner lets you 
 
 ![](map_element.png)  
 Figure 2. Map element uasge guide.
-
 <br>
 
 ### Table input
 ![](table_input Medium.png)  
 Figure 3. Table input usage guide.
-
 <br>
 
 #### Detailed description of each measured variables
@@ -76,25 +70,24 @@ Elevation: Top of Casing (TOC) elevation measured in feet height above mean sea 
 Well type: Includes Monitoring, Residential, Extraction and Miscellaneous Wells.
 
 1,4-dioxane concentration: measured in parts per billion (ppb), and the detectable level for 1,4-dioxane is 1 ppb. The EPA defined a concentration of 0.35 ppb, as the amount of the chemical in water is expected to cause no more than one additional case of cancer in every one million people who drink it for a lifetime. 
-
 <br>
 
 ### Time series plot output
 The "Time series" tab shows plots summarizing patterns in dioxane concentration across time at the selected well. I labelled the x-axis the time-axis, and the y-axis is for the 1,4 dioxane plume concentration. So we can see any trends of dioxane concentration and predict its 
 
 ### Spatial movement animation 
-
+ 
 
 ## Package dependencies & credits
 This application depends on functions contained within [DWQ wqTools R-package](https://github.com/utah-dwq/wqTools). Code was adapted from [Utah DWQ Lake Profile Dashboard](https://github.com/rstudio/shiny-gallery/tree/master/lake-profile-dashboard) developed by [Jake Vander Laan](https://github.com/jakevl). Special thanks to R packages leaflet, plotly, raster and Shiny.
-
 <br>
 
 ## Help & feedback
-For additional help or to submit feedback or bug reports, please contact:  
+For additional help or to submit feedback or bug report, please contact: 
+
 Yifan Luo
 
-University of Michigan School for Environment and Sustainability
+University of Michigan, School for Environment and Sustainability
 
 yifanluo@umich.edu 
 
