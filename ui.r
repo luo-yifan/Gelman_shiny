@@ -1,15 +1,22 @@
-
-
 library(plotly)
 library(leaflet)
 library(raster)
 
-choices_month <-
-  format(seq.Date(
-    from = as.Date("1986-02-01"),
-    by = "month",
-    length.out = 468
-  ), "%Y-%m")
+x = seq.Date(
+  from = as.Date("1986-02-01"),
+  by = "month",
+  length.out = 418
+)
+
+y = c(as.Date("2021-01-01"), 
+      as.Date("2022-01-01"), 
+      as.Date("2023-01-01"), 
+      as.Date("2024-01-01"), 
+      as.Date("2025-01-01"))
+
+z = c(x, y)
+
+choices_month = format(z, "%Y-%m")
 
 ui <- fluidPage(
   tags$head(
@@ -75,7 +82,6 @@ ui <- fluidPage(
                    10,
                    leafletOutput("mymap"),
                    p(),
-                   # custom slider function
                    shinyWidgets::sliderTextInput(
                      inputId = "month_slider",
                      label = "Dates:",
