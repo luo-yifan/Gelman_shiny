@@ -26,9 +26,14 @@ ui <- fluidPage(
   
   # Header
   titlePanel(
-    "Gelman Site Groundwater Contamination Plume Modelling and Prediction"
+    "Gelman Site Groundwater Contamination Plume Modeling and Prediction"
   ),
-  helpText("Yifan Luo's SEAS Capstone Project"),
+  helpText("Disclaimer: The information contained in this application is for general information purposes only ",
+  "and should not be used for navigation, regulatory, permitting, or other legal purposes.",
+  "We have used our reasonable efforts to ensure that the data analysis we release is complete, accurate, and useful.", 
+  "However, because we do not create the data and because the processing required to make the data useful is complex,",
+  "we cannot be liable for omissions or inaccuracies. Both the time series and spatial movement prediction are provided ‘as is’." ,
+  "And some uncertainty and limitations are associated with this data analysis, which will be described in detail in the report."),
   fluidRow(column(
     12,
     navbarPage(

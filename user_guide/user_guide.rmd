@@ -1,7 +1,10 @@
 ---
-title: "Gelman Site Groundwater Contamination Plume Modelling and Prediction"
+title: "Gelman Site Groundwater Contamination Plume Modeling and Prediction"
 author: "Yifan Luo"
 date: "March 27, 2022"
+output:
+  word_document: default
+  pdf_document: default
 ---
 ## Background
 Gelman Sciences Inc. (now Pall Life Sciences), a former medical filter manufacturer near Ann Arbor, Michigan, left contamination stemming from 1966 to 1986 of unregulated waste handling on its facility grounds. A plume of 1,4-dioxane has spread through the groundwater in Ann Arbor (Figure 1). It was first discovered in Third Sister Lake and nearby water wells in the fall of 1985 and a comprehensive site investigation started later in 1986. The topography of this area ranges from 940 feet above mean sea level in the vicinity of the Gelman property to the lower area of approximately 850 feet at Honey Creek. There are currently over 250 monitoring and extraction wells located in and around the plume used to track water levels and dioxane concentrations, which are being used in this study. Groundwater within an area of approximately 8.97 square miles (23.23 square kilometers) has been affected by 1,4-dioxane within four townships: Scio, Lodi, Pittsfield, and Ann Arbor Township. Northing and Easting values range from 274,919.1 to 293,267.4 and 13,264,780.9 to 13,291,717.6 feet, respectively.
@@ -30,7 +33,7 @@ For more information related to this project, please see [Gelman Sciences, Inc. 
 ## Introduction
 This application is designed to interactively visualize the EGLE Gelman Sciences' recent analytical data and establish a platform to analyze the historical trends of dioxane concentration and estimate its future temporal and spatial change in Scio Township and the west part of the City of Ann Arbor in Washtenaw County. The goal of this application is for users to view the data to better identify the areas that need additional attention and provide decision support for the administrators of drinking water safety, water environment protection, and emergency response.
 
-Source code and additional information for this application are available via the [Yifan Luo's GitHub repository](https://github.com/luo-yifan/gelman_shiny) . 
+Source code and additional information for this application are available via [Yifan Luo's GitHub repository](https://github.com/luo-yifan/gelman_shiny) . 
 <br>
 
 ## Data
@@ -62,7 +65,7 @@ Figure 3. Map element usage guide
 <br>
 
 ### Table input
-The Search bar (represented by a white box with light grey text reading All) at the top lets you search for a well name, well type, or any range of depth, elevation, latitude, and longitude. 
+The Search bar (represented by a white box with light gray text reading All) at the top lets you search for a well name, well type, or any range of depth, elevation, latitude, and longitude. 
 
 ![](Screen Shot 2022-03-28 at 6.40.32 PM Medium.png) 
 
@@ -84,7 +87,7 @@ Well type: Includes Monitoring, Residential, Extraction and Miscellaneous Wells.
 <br>
 
 ### Time series plot output
-The "time series" tab shows plots summarizing patterns in dioxane concentration across time at the selected well. I labeled the x-axis the time-axis, and the y-axis is for the 1,4 dioxane plume concentration. So we can see any trends of historical dioxane concentration and predict future contamination level change in five years. There are four horizontal lines of 1, 4, 7.2, and 85 ppb with different shades of grey, which represent: the detectable level, a new trigger for a response if detected in sentinel wells, the current EGLE Part 201 generic residential cleanup criterion (GRCC), the Consent Judgement 3 (CJ3) drinking water criteria.
+The "time series" tab shows plots summarizing patterns in dioxane concentration across time at the selected well. I labeled the x-axis the time-axis, and the y-axis is for the 1,4 dioxane plume concentration. So we can see any trends of historical dioxane concentration and predict future contamination level change in five years. There are four horizontal lines of 1, 4, 7.2, and 85 ppb with different shades of gray, which represent: the detectable level, a new trigger for a response if detected in sentinel wells, the current EGLE Part 201 generic residential cleanup criterion, the Consent Judgment 3 drinking water criteria.
 
 ![](Screen Shot 2022-03-29 at 12.37.21 PM Medium.png) 
 
@@ -104,7 +107,7 @@ This application depends on functions contained within [DWQ wqTools R-package](h
 <br>
 
 ## Disclaimer & feedback
-The information contained in this application is for general information purposes only and should not be used for navigation, regulatory, permitting, or other legal purposes. We have used our reasonable efforts to ensure that the data analysis we release is complete, accurate, and useful. However, because we do not create the data and because the processing required to make the data useful is complex, we cannot be liable for omissions or inaccuracies. Both the time series and spatial movement prediction are provided "as is." And some uncertainty and limitation are associated with this data analysis, which will be described in detail in the report.
+The information contained in this application is for general information purposes only and should not be used for navigation, regulatory, permitting, or other legal purposes. We have used our reasonable efforts to ensure that the data analysis we release is complete, accurate, and useful. However, because we do not create the data and because the processing required to make the data useful is complex, we cannot be liable for omissions or inaccuracies. Both the time series and spatial movement prediction are provided "as is." And some uncertainty and limitations are associated with this data analysis, which will be described in detail in the report.
 
 For additional help or to submit feedback or bug report, please contact: 
 
