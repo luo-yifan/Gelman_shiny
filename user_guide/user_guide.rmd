@@ -54,7 +54,9 @@ Figure 2. Map element uasge guide.
 <br>
 
 ### Table input
-![](table_input Medium.png)  
+The Search bar (represented by a white box with light grey text reading All) at the top  lets you search for a well name, well type or by any range of depth, elevation, latitude and longtitude. 
+
+![](Screen Shot 2022-03-28 at 6.40.32 PM Medium.png)  
 Figure 3. Table input usage guide.
 <br>
 
@@ -83,6 +85,8 @@ This application depends on functions contained within [DWQ wqTools R-package](h
 <br>
 
 ## Help & feedback
+
+
 For additional help or to submit feedback or bug report, please contact: 
 
 Yifan Luo
@@ -94,4 +98,3 @@ yifanluo@umich.edu
 (734)834-2596
 
 <br>
-
