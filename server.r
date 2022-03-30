@@ -163,8 +163,7 @@ server <- function(input, output, session) {
         scrollY = '600px',
         paging = FALSE,
         scrollX = TRUE,
-        dom = "ltipr"#,
-        #searchCols = list(NULL,list(search=paste(reactive_objects$sel_mlid)))
+        dom = "ltipr"
       )
     )
   })
@@ -178,6 +177,7 @@ server <- function(input, output, session) {
     }
     siteid = site_click$id
     reactive_objects$sel_mlid = siteid
+    showNotification(paste(siteid,"clicked"))
   })
   
   # Table row click (to identify selected site & parameter)
@@ -187,6 +187,7 @@ server <- function(input, output, session) {
     siteid = wells_mlid_param_asmnts[row_click, "Well_Name"]
     reactive_objects$sel_param = wells_mlid_param_asmnts[row_click, "ParameterName"]
     reactive_objects$sel_mlid = siteid
+    showNotification(paste(siteid,"clicked"))
   })
   
   # Change map zoom on table click & update selected heatmap_param to selected row param
@@ -212,10 +213,12 @@ server <- function(input, output, session) {
   # Filter table to match clicked site from map
   input_table_proxy = DT::dataTableProxy('table_input')
   observeEvent(input$map_marker_click, {
-    input_table_proxy %>% DT::clearSearch() %>% DT::updateSearch(keywords = list(global = "", columns =
-                                                                                   c(
-                                                                                     paste(reactive_objects$sel_mlid), "", "", ""
-                                                                                   )))
+    input_table_proxy %>% DT::clearSearch() %>%
+      DT::updateSearch(keywords =list(global = "", 
+                              columns =
+                                c(
+                                  paste(reactive_objects$sel_mlid), "", "", "",""
+                                )))
   })
   
   # Profile date selection
@@ -237,7 +240,7 @@ server <- function(input, output, session) {
   observe({
     req(reactive_objects$sel_mlid)
     selected_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$Well_Name == reactive_objects$sel_mlid
-                                                ,]
+                                                 ,]
     selected_prof_asmnts = selected_prof_asmnts[order(selected_prof_asmnts$ActivityStartDate),]
     reactive_objects$selected_prof_asmnts = selected_prof_asmnts
     selected_rec_txt = rec_txt[rec_txt$WellName ==  reactive_objects$sel_mlid
