@@ -156,7 +156,15 @@ server <- function(input, output, session) {
   output$table_input = DT::renderDataTable({
     DT::datatable(
       wells_mlid_param_asmnts,
-      selection = 'single'
+      selection = 'single',
+      rownames = FALSE,
+      filter = "top",
+      options = list(
+        scrollY = '600px',
+        paging = FALSE,
+        scrollX = TRUE,
+        dom = "ltipr"
+      )
     )
   })
   
