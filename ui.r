@@ -63,7 +63,7 @@ ui <- fluidPage(
                                                column(
                                                  12,
                                                  h4("Click a site"),
-                                                 div(DT::dataTableOutput("table_input"))
+                                                 div(DT::dataTableOutput("table_input"),style = "font-size:70%")
                                                ))
                                     )),
                    conditionalPanel(condition = "input.plot_tabs=='Spatial movement'", column(12)),

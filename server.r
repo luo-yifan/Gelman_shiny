@@ -158,6 +158,12 @@ server <- function(input, output, session) {
       wells_mlid_param_asmnts,
       selection = 'single',
       rownames = FALSE,
+      options = list(
+        scrollY = '600px',
+        paging = FALSE,
+        scrollX = TRUE,
+        dom = "ltipr"
+      )
     )
   })
   
