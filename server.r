@@ -159,12 +159,6 @@ server <- function(input, output, session) {
       selection = 'single',
       rownames = FALSE,
       filter = "top",
-      options = list(
-        scrollY = '600px',
-        paging = FALSE,
-        scrollX = TRUE,
-        dom = "ltipr"
-      )
     )
   })
   
