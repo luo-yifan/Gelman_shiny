@@ -49,7 +49,6 @@ server <- function(input, output, session) {
   wells$MonitoringLocationName = wells$MonitoringLocationIdentifier
   wells$MonitoringLocationTypeName = "Sampling Wells"
   
-  
   wells_long = unique(gelman_data[, c("Bore", "SampleDate")])
   wells_long = plyr::rename(wells_long, c("Bore" = "MonitoringLocationIdentifier"))
   wells_long = plyr::rename(wells_long, c("SampleDate" = "ActivityStartDate"))
@@ -104,6 +103,7 @@ server <- function(input, output, session) {
       "lon" = "Longtitude"
     )
   )
+  
   #wells_mlid_param_asmnts$ParameterName = "Sampling Well"
   wells_mlid_param_asmnts = data.frame(wells_mlid_param_asmnts)
   wells_mlid_param_asmnts =
@@ -115,7 +115,6 @@ server <- function(input, output, session) {
     )
   
   #wells_mlid_param_asmnts = cbind(wells_mlid_param_asmnts$Well_Name, wells_mlid_param_asmnts)
-  
   rec_txt = unique(rec_txt_raw[, c("WellName", "Date", "Concentration")])
   rec_txt$Date = as.Date(rec_txt$Date, format = '%Y-%m-%d')
   rec_txt$Type = 'RF interpolation'
@@ -199,6 +198,7 @@ server <- function(input, output, session) {
                                    lat = lat,
                                    zoom = 20)
   })
+  
   # Select profiles & date options based on selected site ID
   observe({
     req(reactive_objects$sel_mlid)
@@ -208,7 +208,6 @@ server <- function(input, output, session) {
     profile_dates = profile_dates[order(profile_dates)]
     reactive_objects$profile_dates = profile_dates
   })
-  
   
   # Filter table to match clicked site from map
   input_table_proxy = DT::dataTableProxy('table_input')
@@ -233,29 +232,25 @@ server <- function(input, output, session) {
     reactive_objects$selectedActID = reactive_objects$sel_profiles[reactive_objects$sel_profiles$ActivityStartDate ==
                                                                      input$date_select, "ActivityIdentifier"][1]
   })
+  
   # Extract profile assessments & profiles_wide for selected site
   observe({
     req(reactive_objects$sel_mlid)
     selected_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$Well_Name == reactive_objects$sel_mlid
-                                                 
-                                                 ,]
+                                                ,]
     selected_prof_asmnts = selected_prof_asmnts[order(selected_prof_asmnts$ActivityStartDate),]
     reactive_objects$selected_prof_asmnts = selected_prof_asmnts
-    
     selected_rec_txt = rec_txt[rec_txt$WellName ==  reactive_objects$sel_mlid
-                               
                                ,]
     selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
     reactive_objects$selected_rec_txt = selected_rec_txt
     
     selected_predict_simple = predict_simple[predict_simple$WellName == reactive_objects$sel_mlid
-                                             
                                              ,]
     selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
     reactive_objects$selected_predict_simple = selected_predict_simple
     
     selected_predict_simple_rec = predict_simple_rec[predict_simple_rec$WellName == reactive_objects$sel_mlid
-                                                     
                                                      ,]
     selected_predict_simple_rec = selected_predict_simple_rec[order(selected_predict_simple$Date),]
     reactive_objects$selected_predict_simple_rec = selected_predict_simple_rec
@@ -333,8 +328,8 @@ server <- function(input, output, session) {
         '#E85D04',
         '#F48C06',
         '#FAA307',
-        '#FFBA08',
-        '#FFB950',
+        '#ffb700',
+        '#ffd000',
         '#ffea00'
       )
     )

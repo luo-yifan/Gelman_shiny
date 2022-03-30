@@ -1,8 +1,6 @@
-
 library(shiny)
 source("ui.R")
 source("server.R")
-
 
 shinyApp(ui = ui, server = server)
 
@@ -10,5 +8,4 @@ shinyApp(ui = ui, server = server)
 # rsconnect::setAccountInfo(name='yifanluo',
 #                           token='801F6411CB4C8EFD33298155AE6A8725',
 #                           secret='0B0CMhurDaBk0BtwqUEx+VxVguLFT+9yt4VYzwx2')
-
 # rsconnect::deployApp()

@@ -22,12 +22,12 @@ In the state of Michigan, the Residential Drinking Water Criterion was set to 85
 
 Monitoring wells are used to sample the groundwater elevations to help determine groundwater flow direction and monitor the levels of dioxane in the water. The monitoring wells at the Gelman site are tested monthly, quarterly, twice a year, or once a year, depending on their location. Gelman conducts the sampling and testing of over 250 monitoring wells following Michigan Department of Environment, Great Lakes and Energy (EGLE) approved sampling plans.  EGLE samples selected wells with Gelman quarterly and submitted the samples to the Laboratory for analysis.
 
+For more information related to this project, please see [Gelman Sciences, Inc. Site of Contamination Information Page](https://www.michigan.gov/egle/0,9429,7-135-3311_4109_9846-71595--,00.html)
+<br>
+
 ![](UpdatedGelmanTimeline0421 Large.png) 
 
 Figure 2. Historical timeline of the Gelman dioxane plume cleanup
-<br>
-
-For more information related to this project, please see [Gelman Sciences, Inc. Site of Contamination Information Page](https://www.michigan.gov/egle/0,9429,7-135-3311_4109_9846-71595--,00.html)
 <br>
 
 ## Introduction
@@ -49,7 +49,7 @@ Output includes a time series plot and spatial movement animation specific will 
 ### Map elements
 Individual monitoring locations are displayed as circle markers on the map. In addition to displaying well sites, well labels are also available. Topographic and satellite base map layers are both available. To turn on any of these layers, hover the mouse over the layers control box (top left of map, under zoom buttons) and select one or more layers.
 
-Features are searchable by well names. To search for a well, click the magnifier glass (top left of map, under the layers control box) and start typing in a street address or well name. Locations matching your search will appear as you type. 
+Features are searchable by well names. To search for a well, click the magnifying glass (top left of map, under the layers control box) and start typing in a street address or well name. Locations matching your search will appear as you type. 
 
 The Map zoom +/- buttons (represented by a plus sign and a minus sign with a gray background) at the top left corner can be used to zoom in or out of the map. Alternately, your mouse wheel also lets you zoom in and out, while left-clicking and dragging lets you pan around the map.
 
@@ -95,7 +95,7 @@ Figure 5. Time series plot output usage guide
 <br>
 
 ### Spatial movement animation 
-This spatial movement animation shows historical and forecasting groundwater pollutant transportation over time. A time slider is set up to move through each month/year. Once hit the Play button on the bottom right of the time slider (represented by a triangle pointing to the right), the spatial distribution will automatically move through time. While playing, the Pause button (represented by two vertical lines) appears in its place. The value control dot (represented by a white dot in between) can be dragged along the slider bar to set the map time interactively. The dark red color represents areas of high plume concentration, and the color bright yellow shows regions where the dioxane level is relatively low. 
+This spatial movement animation shows historical and forecasting groundwater pollutant transportation over time. A time slider is set up to move through each month/year. Once you hit the Play button on the bottom right of the time slider (represented by a triangle pointing to the right), the spatial distribution will automatically move through time. While playing, the Pause button (represented by two vertical lines) appears in its place. The value control dot (represented by a white dot in between) can be dragged along the slider bar to set the map time interactively. The dark red color represents areas of high plume concentration, and the color bright yellow shows regions where the dioxane level is relatively low. 
 
 ![](Screen Shot 2022-03-29 at 12.41.09 PM Large.png) 
 
@@ -106,9 +106,7 @@ Figure 6. Spatial movement animation output usage guide
 This application depends on functions contained within [DWQ wqTools R-package](https://github.com/utah-dwq/wqTools). Code was adapted from [Utah DWQ Lake Profile Dashboard](https://github.com/rstudio/shiny-gallery/tree/master/lake-profile-dashboard) developed by [Jake Vander Laan](https://github.com/jakevl). Special thanks to R packages leaflet, plotly, raster and Shiny.
 <br>
 
-## Disclaimer & feedback
-The information contained in this application is for general information purposes only and should not be used for navigation, regulatory, permitting, or other legal purposes. We have used our reasonable efforts to ensure that the data analysis we release is complete, accurate, and useful. However, because we do not create the data and because the processing required to make the data useful is complex, we cannot be liable for omissions or inaccuracies. Both the time series and spatial movement prediction are provided "as is." And some uncertainty and limitations are associated with this data analysis, which will be described in detail in the report.
-
+## Feedback
 For additional help or to submit feedback or bug report, please contact: 
 
 Yifan Luo
