@@ -148,7 +148,7 @@ server <- function(input, output, session) {
   
   session$onFlushed(once = T, function() {
     output$map <- leaflet::renderLeaflet({
-      wqTools::buildMap(sites = wells, plot_polys = TRUE)
+      wqTools::buildMap(sites = wells)
     })
   })
   
@@ -182,6 +182,7 @@ server <- function(input, output, session) {
   
   # Table row click (to identify selected site & parameter)
   observe({
+    showNotification("observe activate")
     req(input$table_input_rows_selected)
     row_click = input$table_input_rows_selected
     siteid = wells_mlid_param_asmnts[row_click, "Well_Name"]
