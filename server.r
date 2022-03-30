@@ -158,7 +158,6 @@ server <- function(input, output, session) {
       wells_mlid_param_asmnts,
       selection = 'single',
       rownames = FALSE,
-      filter = "top"
     )
   })
   
