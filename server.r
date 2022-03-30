@@ -183,7 +183,6 @@ server <- function(input, output, session) {
     showNotification(paste(siteid,"clicked"))
   })
   
-  # Change map zoom on table click & update selected heatmap_param to selected row param
   map_proxy = leaflet::leafletProxy("map")
   observeEvent(input$table_input_rows_selected, {
     lat = wells[wells$MonitoringLocationIdentifier == reactive_objects$sel_mlid, "LatitudeMeasure"]
@@ -204,16 +203,16 @@ server <- function(input, output, session) {
   })
   
   # Filter table to match clicked site from map
-  input_table_proxy = DT::dataTableProxy('table_input')
-  observeEvent(input$map_marker_click, {
-    input_table_proxy %>% DT::clearSearch() %>%
-      DT::updateSearch(keywords =list(global = "", 
-                              columns =
-                                c(
-                                  paste(reactive_objects$sel_mlid), "", "", "",""
-                                )))
-  })
-  
+  # input_table_proxy = DT::dataTableProxy('table_input')
+  # observeEvent(input$map_marker_click, {
+  #   input_table_proxy %>% DT::clearSearch() %>%
+  #     DT::updateSearch(keywords =list(global = "", 
+  #                             columns =
+  #                               c(
+  #                                 paste(reactive_objects$sel_mlid), "", "", "",""
+  #                               )))
+  # })
+  # 
   # Profile date selection
   output$date_select <- renderUI({
     req(reactive_objects$profile_dates)
@@ -273,42 +272,42 @@ server <- function(input, output, session) {
     reactive_objects$selected_rbinded = total_data
   })
   
-  output$ggPlot = renderPlotly({
-    req(reactive_objects$selected_prof_asmnts)
-    
-    ggplot(reactive_objects$selected_rbinded,
-           aes(Date, Concentration)) +
-      geom_point(aes(colour = factor(Type)), show.legend = FALSE) +
-      geom_hline(
-        yintercept = 1,
-        size = 0.5,
-        linetype = "dashed",
-        color = "grey80"
-      ) +
-      geom_hline(
-        yintercept = 4,
-        size = 0.5,
-        linetype = "dashed",
-        color = "grey60"
-      ) +
-      geom_hline(
-        yintercept = 7.2,
-        size = 0.5,
-        linetype = "dashed",
-        color = "grey40"
-      ) +
-      geom_hline(
-        yintercept = 85,
-        size = 0.5,
-        linetype = "dashed",
-        color = "grey20"
-      ) +
-      scale_y_continuous(limits = c(0, max(
-        1.0,
-        max(reactive_objects$selected_rbinded$Concentration)
-      )))
-  })
-  
+  # output$ggPlot = renderPlotly({
+  #   req(reactive_objects$selected_prof_asmnts)
+  #   
+  #   ggplot(reactive_objects$selected_rbinded,
+  #          aes(Date, Concentration)) +
+  #     geom_point(aes(colour = factor(Type)), show.legend = FALSE) +
+  #     geom_hline(
+  #       yintercept = 1,
+  #       size = 0.5,
+  #       linetype = "dashed",
+  #       color = "grey80"
+  #     ) +
+  #     geom_hline(
+  #       yintercept = 4,
+  #       size = 0.5,
+  #       linetype = "dashed",
+  #       color = "grey60"
+  #     ) +
+  #     geom_hline(
+  #       yintercept = 7.2,
+  #       size = 0.5,
+  #       linetype = "dashed",
+  #       color = "grey40"
+  #     ) +
+  #     geom_hline(
+  #       yintercept = 85,
+  #       size = 0.5,
+  #       linetype = "dashed",
+  #       color = "grey20"
+  #     ) +
+  #     scale_y_continuous(limits = c(0, max(
+  #       1.0,
+  #       max(reactive_objects$selected_rbinded$Concentration)
+  #     )))
+  # })
+  # 
   output$mymap <- renderLeaflet({
     date_time = gsub('-', '', input$month_slider)
     imgPath = paste(projectPath, "/data/tif/Conc.", date_time, ".tif", sep = "")
