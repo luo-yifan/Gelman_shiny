@@ -20,6 +20,110 @@ predict_rm5_rec_raw <-
   read.csv(file = "./data/rm5_predict_data_rec.csv")
 predict_rm5_raw <- read.csv(file = "./data/rm5_predict_data.csv")
 
+wells = unique(gelman_data[, c("Bore", "lat", "lon")])
+wells = plyr::rename(
+  wells,
+  c(
+    "lat" = "LatitudeMeasure",
+    "lon" = "LongitudeMeasure",
+    "Bore" = "MonitoringLocationIdentifier"
+  )
+)
+wells$MonitoringLocationName = wells$MonitoringLocationIdentifier
+wells$MonitoringLocationTypeName = "Sampling Wells"
+
+wells_long = unique(gelman_data[, c("Bore", "SampleDate")])
+wells_long = plyr::rename(wells_long, c("Bore" = "MonitoringLocationIdentifier"))
+wells_long = plyr::rename(wells_long, c("SampleDate" = "ActivityStartDate"))
+wells_long$ParameterName = "Sampling Well"
+wells_long$Bore = wells_long$MonitoringLocationIdentifier
+wells_long$ActivityStartDate = as.Date(wells_long$ActivityStartDate, format =
+                                         '%Y-%m-%d')
+wells_long$ActivityIdentifier =  paste(wells_long$MonitoringLocationIdentifier,
+                                       wells_long$ActivityStartDate,
+                                       sep = "_")
+wells_long = data.frame(wells_long)
+
+wells = wells[wells$MonitoringLocationIdentifier %in% wells_long$MonitoringLocationIdentifier, ]
+wells = data.frame(wells)
+
+wells_ind_prof_asmnts = unique(gelman_data[, c("Bore", "SampleDate", "Value", "lat", "lon")])
+wells_ind_prof_asmnts = plyr::rename(
+  wells_ind_prof_asmnts,
+  c(
+    "lat" = "LatitudeMeasure",
+    "lon" = "LongitudeMeasure",
+    "Bore" = "MonitoringLocationName",
+    "SampleDate" = "ActivityStartDate"
+  )
+)
+wells_ind_prof_asmnts$MonitoringLocationIdentifier = wells_ind_prof_asmnts$MonitoringLocationName
+wells_ind_prof_asmnts$ActivityStartDate = as.Date(wells_ind_prof_asmnts$ActivityStartDate, format =
+                                                    '%Y-%m-%d')
+
+wells_ind_prof_asmnts$ActivityIdentifier =
+  paste(
+    wells_ind_prof_asmnts$MonitoringLocationIdentifier,
+    wells_ind_prof_asmnts$ActivityStartDate,
+    sep = "_"
+  )
+
+wells_ind_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$ActivityIdentifier
+                                              %in% wells_long$ActivityIdentifier, ]
+wells_ind_prof_asmnts$Well_Name = wells_ind_prof_asmnts$MonitoringLocationIdentifier
+wells_ind_prof_asmnts = plyr::rename(wells_ind_prof_asmnts, c("Value" =
+                                                                "do_pct_exc"))
+wells_ind_prof_asmnts = data.frame(wells_ind_prof_asmnts)
+
+wells_mlid_param_asmnts = unique(gelman_data[, c("Bore", "Depth2", "Elevation", "lat", "lon")])
+wells_mlid_param_asmnts = plyr::rename(
+  wells_mlid_param_asmnts,
+  c(
+    "Bore" = "Well_Name",
+    "Depth2" = "Depth",
+    "Elevation" = "Elevation",
+    "lat" = "Latitude",
+    "lon" = "Longtitude"
+  )
+)
+
+#wells_mlid_param_asmnts$ParameterName = "Sampling Well"
+
+wells_mlid_param_asmnts =
+  merge(
+    x = wells_mlid_param_asmnts,
+    y = well_types[, c("Well_Name", "Well_Types")],
+    by = "Well_Name",
+    all.x = TRUE
+  )
+wells_mlid_param_asmnts = data.frame(wells_mlid_param_asmnts)
+
+#wells_mlid_param_asmnts = cbind(wells_mlid_param_asmnts$Well_Name, wells_mlid_param_asmnts)
+rec_txt = unique(rec_txt_raw[, c("WellName", "Date", "Concentration")])
+rec_txt$Date = as.Date(rec_txt$Date, format = '%Y-%m-%d')
+rec_txt$Type = 'RF interpolation'
+rec_txt = data.frame(rec_txt)
+
+predict_simple = unique(predict_simple_raw[, c("WellName", "Date", "Concentration")])
+predict_simple$Date = as.Date(predict_simple$Date, format = '%Y-%m-%d')
+predict_simple$Type = 'Five-year prediction'
+predict_simple = data.frame(predict_simple)
+
+predict_simple_rec = unique(predict_simple_rec_raw[, c("WellName", "Date", "Concentration")])
+predict_simple_rec$Date = as.Date(predict_simple_rec$Date, format = '%Y-%m-%d')
+predict_simple_rec$Type = 'RF prediction'
+predict_simple_rec = data.frame(predict_simple_rec)
+
+predict_rm5_rec = unique(predict_rm5_rec_raw[, c("WellName", "Date", "Concentration")])
+predict_rm5_rec$Date = as.Date(predict_rm5_rec$Date, format = '%Y-%m-%d')
+predict_rm5_rec$Type = 'RF predict validation'
+predict_rm5_rec = data.frame(predict_rm5_rec)
+
+predict_rm5 = unique(predict_rm5_raw[, c("WellName", "Date", "Concentration")])
+predict_rm5$Date = as.Date(predict_rm5$Date, format = '%Y-%m-%d')
+predict_rm5$Type = 'Raw predict validation'
+predict_rm5 = data.frame(predict_rm5)
+
 server <- function(input, output, session) {
   # Loading modal to keep user out of trouble while map draws...
   showModal(
@@ -37,108 +141,7 @@ server <- function(input, output, session) {
     removeModal()
   })
   
-  wells = unique(gelman_data[, c("Bore", "lat", "lon")])
-  wells = plyr::rename(
-    wells,
-    c(
-      "lat" = "LatitudeMeasure",
-      "lon" = "LongitudeMeasure",
-      "Bore" = "MonitoringLocationIdentifier"
-    )
-  )
-  wells$MonitoringLocationName = wells$MonitoringLocationIdentifier
-  wells$MonitoringLocationTypeName = "Sampling Wells"
-  
-  wells_long = unique(gelman_data[, c("Bore", "SampleDate")])
-  wells_long = plyr::rename(wells_long, c("Bore" = "MonitoringLocationIdentifier"))
-  wells_long = plyr::rename(wells_long, c("SampleDate" = "ActivityStartDate"))
-  wells_long$ParameterName = "Sampling Well"
-  wells_long$Bore = wells_long$MonitoringLocationIdentifier
-  wells_long$ActivityStartDate = as.Date(wells_long$ActivityStartDate, format =
-                                           '%Y-%m-%d')
-  wells_long$ActivityIdentifier =  paste(wells_long$MonitoringLocationIdentifier,
-                                         wells_long$ActivityStartDate,
-                                         sep = "_")
-  wells_long = data.frame(wells_long)
-  
-  wells = wells[wells$MonitoringLocationIdentifier %in% wells_long$MonitoringLocationIdentifier, ]
-  wells = data.frame(wells)
-  
-  wells_ind_prof_asmnts = unique(gelman_data[, c("Bore", "SampleDate", "Value", "lat", "lon")])
-  wells_ind_prof_asmnts = plyr::rename(
-    wells_ind_prof_asmnts,
-    c(
-      "lat" = "LatitudeMeasure",
-      "lon" = "LongitudeMeasure",
-      "Bore" = "MonitoringLocationName",
-      "SampleDate" = "ActivityStartDate"
-    )
-  )
-  wells_ind_prof_asmnts$MonitoringLocationIdentifier = wells_ind_prof_asmnts$MonitoringLocationName
-  wells_ind_prof_asmnts$ActivityStartDate = as.Date(wells_ind_prof_asmnts$ActivityStartDate, format =
-                                                      '%Y-%m-%d')
-  
-  wells_ind_prof_asmnts$ActivityIdentifier =
-    paste(
-      wells_ind_prof_asmnts$MonitoringLocationIdentifier,
-      wells_ind_prof_asmnts$ActivityStartDate,
-      sep = "_"
-    )
-  
-  wells_ind_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$ActivityIdentifier
-                                                %in% wells_long$ActivityIdentifier, ]
-  wells_ind_prof_asmnts$Well_Name = wells_ind_prof_asmnts$MonitoringLocationIdentifier
-  wells_ind_prof_asmnts = plyr::rename(wells_ind_prof_asmnts, c("Value" =
-                                                                  "do_pct_exc"))
-  wells_ind_prof_asmnts = data.frame(wells_ind_prof_asmnts)
-  
-  wells_mlid_param_asmnts = unique(gelman_data[, c("Bore", "Depth2", "Elevation", "lat", "lon")])
-  wells_mlid_param_asmnts = plyr::rename(
-    wells_mlid_param_asmnts,
-    c(
-      "Bore" = "Well_Name",
-      "Depth2" = "Depth",
-      "Elevation" = "Elevation",
-      "lat" = "Latitude",
-      "lon" = "Longtitude"
-    )
-  )
-  
-  #wells_mlid_param_asmnts$ParameterName = "Sampling Well"
-  wells_mlid_param_asmnts = data.frame(wells_mlid_param_asmnts)
-  wells_mlid_param_asmnts =
-    merge(
-      x = wells_mlid_param_asmnts,
-      y = well_types[, c("Well_Name", "Well_Types")],
-      by = "Well_Name",
-      all.x = TRUE
-    )
-  
-  #wells_mlid_param_asmnts = cbind(wells_mlid_param_asmnts$Well_Name, wells_mlid_param_asmnts)
-  rec_txt = unique(rec_txt_raw[, c("WellName", "Date", "Concentration")])
-  rec_txt$Date = as.Date(rec_txt$Date, format = '%Y-%m-%d')
-  rec_txt$Type = 'RF interpolation'
-  rec_txt = data.frame(rec_txt)
-  
-  predict_simple = unique(predict_simple_raw[, c("WellName", "Date", "Concentration")])
-  predict_simple$Date = as.Date(predict_simple$Date, format = '%Y-%m-%d')
-  predict_simple$Type = 'Five-year prediction'
-  predict_simple = data.frame(predict_simple)
-  
-  predict_simple_rec = unique(predict_simple_rec_raw[, c("WellName", "Date", "Concentration")])
-  predict_simple_rec$Date = as.Date(predict_simple_rec$Date, format = '%Y-%m-%d')
-  predict_simple_rec$Type = 'RF prediction'
-  predict_simple_rec = data.frame(predict_simple_rec)
-  
-  predict_rm5_rec = unique(predict_rm5_rec_raw[, c("WellName", "Date", "Concentration")])
-  predict_rm5_rec$Date = as.Date(predict_rm5_rec$Date, format = '%Y-%m-%d')
-  predict_rm5_rec$Type = 'RF predict validation'
-  predict_rm5_rec = data.frame(predict_rm5_rec)
-  
-  predict_rm5 = unique(predict_rm5_raw[, c("WellName", "Date", "Concentration")])
-  predict_rm5$Date = as.Date(predict_rm5$Date, format = '%Y-%m-%d')
-  predict_rm5$Type = 'Raw predict validation'
-  predict_rm5 = data.frame(predict_rm5)
+ 
   
   # Empty reactive values object
   reactive_objects = reactiveValues()
@@ -156,7 +159,13 @@ server <- function(input, output, session) {
   output$table_input = DT::renderDataTable({
     DT::datatable(
       wells_mlid_param_asmnts,
-      selection = 'single'
+      selection = 'single',
+      rownames = FALSE,
+      options = list(
+        scrollY = '600px',
+        paging = FALSE,
+        scrollX = TRUE
+      )
     )
   })
   
@@ -169,21 +178,17 @@ server <- function(input, output, session) {
     }
     siteid = site_click$id
     reactive_objects$sel_mlid = siteid
-    showNotification(paste(siteid,"clicked"))
   })
   
   # Table row click (to identify selected site & parameter)
   observe({
-    showNotification("observe activate")
     req(input$table_input_rows_selected)
     row_click = input$table_input_rows_selected
-    siteid = wells_mlid_param_asmnts[row_click, "Well_Name"]
+    siteid =  wells_mlid_param_asmnts[row_click, "Well_Name"]
     reactive_objects$sel_param = wells_mlid_param_asmnts[row_click, "ParameterName"]
     reactive_objects$sel_mlid = siteid
-    showNotification(paste(siteid,"clicked"))
   })
   
-  # Change map zoom on table click & update selected heatmap_param to selected row param
   map_proxy = leaflet::leafletProxy("map")
   observeEvent(input$table_input_rows_selected, {
     lat = wells[wells$MonitoringLocationIdentifier == reactive_objects$sel_mlid, "LatitudeMeasure"]
@@ -207,13 +212,9 @@ server <- function(input, output, session) {
   input_table_proxy = DT::dataTableProxy('table_input')
   observeEvent(input$map_marker_click, {
     input_table_proxy %>% DT::clearSearch() %>%
-      DT::updateSearch(keywords =list(global = "", 
-                              columns =
-                                c(
-                                  paste(reactive_objects$sel_mlid), "", "", "",""
-                                )))
+      DT::updateSearch(keywords =list(global = reactive_objects$sel_mlid,columns = NULL))
   })
-  
+
   # Profile date selection
   output$date_select <- renderUI({
     req(reactive_objects$profile_dates)
@@ -232,24 +233,19 @@ server <- function(input, output, session) {
   # Extract profile assessments & profiles_wide for selected site
   observe({
     req(reactive_objects$sel_mlid)
-    selected_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$Well_Name == reactive_objects$sel_mlid
-                                                 ,]
-    selected_prof_asmnts = selected_prof_asmnts[order(selected_prof_asmnts$ActivityStartDate),]
-    reactive_objects$selected_prof_asmnts = selected_prof_asmnts
-    selected_rec_txt = rec_txt[rec_txt$WellName ==  reactive_objects$sel_mlid
-                               ,]
-    selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
-    reactive_objects$selected_rec_txt = selected_rec_txt
-    
-    selected_predict_simple = predict_simple[predict_simple$WellName == reactive_objects$sel_mlid
-                                             ,]
-    selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
-    reactive_objects$selected_predict_simple = selected_predict_simple
-    
-    selected_predict_simple_rec = predict_simple_rec[predict_simple_rec$WellName == reactive_objects$sel_mlid
-                                                     ,]
-    selected_predict_simple_rec = selected_predict_simple_rec[order(selected_predict_simple$Date),]
-    reactive_objects$selected_predict_simple_rec = selected_predict_simple_rec
+    selected_prof_asmnts = dplyr::filter(wells_ind_prof_asmnts, Well_Name == reactive_objects$sel_mlid) 
+    # 
+    # selected_rec_txt = dplyr::filter(rec_txt, WellName == reactive_objects$sel_mlid) 
+    # 
+    # selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
+    # reactive_objects$selected_rec_txt = selected_rec_txt
+    # 
+    selected_predict_simple = dplyr::filter(predict_simple, WellName == as.character(reactive_objects$sel_mlid))
+    # 
+    # selected_predict_simple_rec = dplyr::filter(predict_simple_rec, WellName == reactive_objects$sel_mlid) 
+    # 
+    # selected_predict_simple_rec = selected_predict_simple_rec[order(selected_predict_simple$Date),]
+    # reactive_objects$selected_predict_simple_rec = selected_predict_simple_rec
     
     ori_data = selected_prof_asmnts[c("Well_Name", "do_pct_exc", "ActivityStartDate")]
     ori_data = plyr::rename(
@@ -261,21 +257,23 @@ server <- function(input, output, session) {
       )
     )
     
-    ori_data$Type = "Historical record"
-    total_data <- rbind(ori_data, predict_simple)
+    ori_data$Type = 'Historical record'
+    total_data <- rbind(ori_data, selected_predict_simple)
+    
+    
     # total_data <- rbind(rec_txt, predict_simple_rec)
     # total_data <- rbind(total_data, ori_data)
     # total_data <- rbind(total_data, predict_rm5_rec)
     # total_data <- rbind(total_data, predict_rm5)
     # total_data <- rbind(total_data, predict_simple)
     
-    total_data = total_data[total_data$WellName == reactive_objects$sel_mlid, ]
+    
+    
     reactive_objects$selected_rbinded = total_data
   })
   
   output$ggPlot = renderPlotly({
-    req(reactive_objects$selected_prof_asmnts)
-    
+
     ggplot(reactive_objects$selected_rbinded,
            aes(Date, Concentration)) +
       geom_point(aes(colour = factor(Type)), show.legend = FALSE) +
@@ -308,7 +306,7 @@ server <- function(input, output, session) {
         max(reactive_objects$selected_rbinded$Concentration)
       )))
   })
-  
+
   output$mymap <- renderLeaflet({
     date_time = gsub('-', '', input$month_slider)
     imgPath = paste(projectPath, "/data/tif/Conc.", date_time, ".tif", sep = "")
