@@ -243,7 +243,9 @@ server <- function(input, output, session) {
                                                  ,]
     selected_prof_asmnts = selected_prof_asmnts[order(selected_prof_asmnts$ActivityStartDate),]
     reactive_objects$selected_prof_asmnts = selected_prof_asmnts
-    selected_rec_txt = rec_txt[rec_txt$WellName ==  reactive_objects$sel_mlid
+    showNotification(str(rec_txt$WellName))
+    showNotification(str(reactive_objects$sel_mlid))
+    selected_rec_txt = rec_txt[str(rec_txt$WellName) ==  str(reactive_objects$sel_mlid)
                                ,]
     selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
     reactive_objects$selected_rec_txt = selected_rec_txt
