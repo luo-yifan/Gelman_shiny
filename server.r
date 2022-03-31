@@ -239,12 +239,10 @@ server <- function(input, output, session) {
   # Extract profile assessments & profiles_wide for selected site
   observe({
     req(reactive_objects$sel_mlid)
-    selected_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$Well_Name == reactive_objects$sel_mlid
-                                                 ,]
+    selected_prof_asmnts = dplyr::filter(wells_ind_prof_asmnts, WellName == reactive_objects$sel_mlid) 
+      
     selected_prof_asmnts = selected_prof_asmnts[order(selected_prof_asmnts$ActivityStartDate),]
     reactive_objects$selected_prof_asmnts = selected_prof_asmnts
-    showNotification(str(rec_txt$WellName))
-    showNotification(str(reactive_objects$sel_mlid))
     
     selected_rec_txt = dplyr::filter(rec_txt, WellName == reactive_objects$sel_mlid) 
     
