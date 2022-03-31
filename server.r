@@ -178,18 +178,15 @@ server <- function(input, output, session) {
     }
     siteid = site_click$id
     reactive_objects$sel_mlid = siteid
-    showNotification(paste(siteid,"clicked"))
   })
   
   # Table row click (to identify selected site & parameter)
   observe({
-    showNotification("observe activate")
     req(input$table_input_rows_selected)
     row_click = input$table_input_rows_selected
     siteid =  wells_mlid_param_asmnts[row_click, "Well_Name"]
     reactive_objects$sel_param = wells_mlid_param_asmnts[row_click, "ParameterName"]
     reactive_objects$sel_mlid = siteid
-    showNotification(paste(siteid,"clicked"))
   })
   
   map_proxy = leaflet::leafletProxy("map")
@@ -262,9 +259,6 @@ server <- function(input, output, session) {
     
     ori_data$Type = 'Historical record'
     total_data <- rbind(ori_data, selected_predict_simple)
-    # showNotification(typeof(ori_data))
-    # showNotification(typeof(predict_simple))
-    # showNotification(str(colnames(predict_simple)))
     
     
     # total_data <- rbind(rec_txt, predict_simple_rec)
