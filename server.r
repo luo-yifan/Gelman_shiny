@@ -161,8 +161,7 @@ server <- function(input, output, session) {
       options = list(
         scrollY = '600px',
         paging = FALSE,
-        scrollX = TRUE,
-        dom = "ltipr"
+        scrollX = TRUE
       )
     )
   })
@@ -180,15 +179,15 @@ server <- function(input, output, session) {
   })
   
   # Table row click (to identify selected site & parameter)
-  # observe({
-  #   showNotification("observe activate")
-  #   req(input$table_input_rows_selected)
-  #   row_click = input$table_input_rows_selected
-  #   siteid = wells_mlid_param_asmnts[row_click, "Well_Name"]
-  #   reactive_objects$sel_param = wells_mlid_param_asmnts[row_click, "ParameterName"]
-  #   reactive_objects$sel_mlid = siteid
-  #   showNotification(paste(siteid,"clicked"))
-  # })
+  observe({
+    showNotification("observe activate")
+    req(input$table_input_rows_selected)
+    row_click = input$table_input_rows_selected
+    siteid = wells_mlid_param_asmnts[row_click, "Well_Name"]
+    reactive_objects$sel_param = wells_mlid_param_asmnts[row_click, "ParameterName"]
+    reactive_objects$sel_mlid = siteid
+    showNotification(paste(siteid,"clicked"))
+  })
   
   map_proxy = leaflet::leafletProxy("map")
   observeEvent(input$table_input_rows_selected, {
