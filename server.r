@@ -250,12 +250,12 @@ server <- function(input, output, session) {
     selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
     reactive_objects$selected_rec_txt = selected_rec_txt
     
-    selected_predict_simple = predict_simple[predict_simple$WellName == reactive_objects$sel_mlid
+    selected_predict_simple = predict_simple[str(predict_simple$WellName) == str(reactive_objects$sel_mlid)
                                              ,]
     selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
     reactive_objects$selected_predict_simple = selected_predict_simple
     
-    selected_predict_simple_rec = predict_simple_rec[predict_simple_rec$WellName == reactive_objects$sel_mlid
+    selected_predict_simple_rec = predict_simple_rec[str(predict_simple_rec$WellName) == str(reactive_objects$sel_mlid)
                                                      ,]
     selected_predict_simple_rec = selected_predict_simple_rec[order(selected_predict_simple$Date),]
     reactive_objects$selected_predict_simple_rec = selected_predict_simple_rec
@@ -278,7 +278,7 @@ server <- function(input, output, session) {
     # total_data <- rbind(total_data, predict_rm5)
     # total_data <- rbind(total_data, predict_simple)
     
-    total_data = total_data[total_data$WellName == reactive_objects$sel_mlid, ]
+    total_data = total_data[str(total_data$WellName) == str(reactive_objects$sel_mlid), ]
     reactive_objects$selected_rbinded = total_data
   })
   
