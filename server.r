@@ -243,7 +243,7 @@ server <- function(input, output, session) {
     # selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
     # reactive_objects$selected_rec_txt = selected_rec_txt
     # 
-    selected_predict_simple = dplyr::filter(predict_simple, Type == 'Five-year prediction')
+    selected_predict_simple = dplyr::filter(predict_simple, WellName == as.character(reactive_objects$sel_mlid))
 
     selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
     # 
