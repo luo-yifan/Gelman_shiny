@@ -244,8 +244,6 @@ server <- function(input, output, session) {
     # reactive_objects$selected_rec_txt = selected_rec_txt
     # 
     selected_predict_simple = dplyr::filter(predict_simple, WellName == as.character(reactive_objects$sel_mlid))
-
-    selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
     # 
     # selected_predict_simple_rec = dplyr::filter(predict_simple_rec, WellName == reactive_objects$sel_mlid) 
     # 
@@ -263,7 +261,7 @@ server <- function(input, output, session) {
     )
     
     ori_data$Type = 'Historical record'
-    total_data <- rbind(ori_data, predict_simple)
+    total_data <- rbind(ori_data, selected_predict_simple)
     # showNotification(typeof(ori_data))
     # showNotification(typeof(predict_simple))
     # showNotification(str(colnames(predict_simple)))
@@ -275,7 +273,7 @@ server <- function(input, output, session) {
     # total_data <- rbind(total_data, predict_rm5)
     # total_data <- rbind(total_data, predict_simple)
     
-    total_data = dplyr::filter(total_data, WellName == reactive_objects$sel_mlid) 
+    
     
     reactive_objects$selected_rbinded = total_data
   })
