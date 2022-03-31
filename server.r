@@ -106,6 +106,7 @@ rec_txt = data.frame(rec_txt)
 predict_simple = unique(predict_simple_raw[, c("WellName", "Date", "Concentration")])
 predict_simple$Date = as.Date(predict_simple$Date, format = '%Y-%m-%d')
 predict_simple$Type = 'Five-year prediction'
+predict_simple$Well_Name = predict_simple$WellName
 predict_simple = data.frame(predict_simple)
 
 predict_simple_rec = unique(predict_simple_rec_raw[, c("WellName", "Date", "Concentration")])
@@ -214,11 +215,7 @@ server <- function(input, output, session) {
   input_table_proxy = DT::dataTableProxy('table_input')
   observeEvent(input$map_marker_click, {
     input_table_proxy %>% DT::clearSearch() %>%
-      DT::updateSearch(keywords =list(global = "",
-                              columns =
-                                c(
-                                  paste(reactive_objects$sel_mlid), "", "", "",""
-                                )))
+      DT::updateSearch(keywords =list(global = reactive_objects$sel_mlid,columns = NULL))
   })
 
   # Profile date selection
@@ -263,13 +260,14 @@ server <- function(input, output, session) {
     ori_data = plyr::rename(
       ori_data,
       c(
-        "Well_Name" = "WellName",
+        "Well_Name" = "Well_Name",
         "do_pct_exc" = "Concentration",
         "ActivityStartDate" = "Date"
       )
     )
     
-    ori_data$Type = "Historical record"
+    ori_data$Type = 'Historical record'
+    predict_simple = dplyr::select(predict_simple, -c('WellName'))
     total_data <- rbind(ori_data, predict_simple)
     # total_data <- rbind(rec_txt, predict_simple_rec)
     # total_data <- rbind(total_data, ori_data)
@@ -277,7 +275,7 @@ server <- function(input, output, session) {
     # total_data <- rbind(total_data, predict_rm5)
     # total_data <- rbind(total_data, predict_simple)
     
-    total_data = dplyr::filter(ori_data, WellName == reactive_objects$sel_mlid) 
+    total_data = dplyr::filter(total_data, Well_Name == reactive_objects$sel_mlid) 
     
     reactive_objects$selected_rbinded = total_data
   })
