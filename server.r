@@ -245,18 +245,19 @@ server <- function(input, output, session) {
     reactive_objects$selected_prof_asmnts = selected_prof_asmnts
     showNotification(str(rec_txt$WellName))
     showNotification(str(reactive_objects$sel_mlid))
-    selected_rec_txt = rec_txt[str(rec_txt$WellName) ==  str(reactive_objects$sel_mlid)
-                               ,]
+    
+    selected_rec_txt = dplyr::filter(rec_txt, WellName == reactive_objects$sel_mlid) 
+    
     selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
     reactive_objects$selected_rec_txt = selected_rec_txt
     
-    selected_predict_simple = predict_simple[str(predict_simple$WellName) == str(reactive_objects$sel_mlid)
-                                             ,]
+    selected_predict_simple = dplyr::filter(predict_simple, WellName == reactive_objects$sel_mlid) 
+    
     selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
     reactive_objects$selected_predict_simple = selected_predict_simple
     
-    selected_predict_simple_rec = predict_simple_rec[str(predict_simple_rec$WellName) == str(reactive_objects$sel_mlid)
-                                                     ,]
+    selected_predict_simple_rec = dplyr::filter(predict_simple_rec, WellName == reactive_objects$sel_mlid) 
+    
     selected_predict_simple_rec = selected_predict_simple_rec[order(selected_predict_simple$Date),]
     reactive_objects$selected_predict_simple_rec = selected_predict_simple_rec
     
@@ -278,46 +279,47 @@ server <- function(input, output, session) {
     # total_data <- rbind(total_data, predict_rm5)
     # total_data <- rbind(total_data, predict_simple)
     
-    total_data = total_data[str(total_data$WellName) == str(reactive_objects$sel_mlid), ]
+    total_data = dplyr::filter(total_data, WellName == reactive_objects$sel_mlid) 
+    
     reactive_objects$selected_rbinded = total_data
   })
   
-  # output$ggPlot = renderPlotly({
-  #   req(reactive_objects$selected_prof_asmnts)
-  #   
-  #   ggplot(reactive_objects$selected_rbinded,
-  #          aes(Date, Concentration)) +
-  #     geom_point(aes(colour = factor(Type)), show.legend = FALSE) +
-  #     geom_hline(
-  #       yintercept = 1,
-  #       size = 0.5,
-  #       linetype = "dashed",
-  #       color = "grey80"
-  #     ) +
-  #     geom_hline(
-  #       yintercept = 4,
-  #       size = 0.5,
-  #       linetype = "dashed",
-  #       color = "grey60"
-  #     ) +
-  #     geom_hline(
-  #       yintercept = 7.2,
-  #       size = 0.5,
-  #       linetype = "dashed",
-  #       color = "grey40"
-  #     ) +
-  #     geom_hline(
-  #       yintercept = 85,
-  #       size = 0.5,
-  #       linetype = "dashed",
-  #       color = "grey20"
-  #     ) +
-  #     scale_y_continuous(limits = c(0, max(
-  #       1.0,
-  #       max(reactive_objects$selected_rbinded$Concentration)
-  #     )))
-  # })
-  # 
+  output$ggPlot = renderPlotly({
+    req(reactive_objects$selected_prof_asmnts)
+
+    ggplot(reactive_objects$selected_rbinded,
+           aes(Date, Concentration)) +
+      geom_point(aes(colour = factor(Type)), show.legend = FALSE) +
+      geom_hline(
+        yintercept = 1,
+        size = 0.5,
+        linetype = "dashed",
+        color = "grey80"
+      ) +
+      geom_hline(
+        yintercept = 4,
+        size = 0.5,
+        linetype = "dashed",
+        color = "grey60"
+      ) +
+      geom_hline(
+        yintercept = 7.2,
+        size = 0.5,
+        linetype = "dashed",
+        color = "grey40"
+      ) +
+      geom_hline(
+        yintercept = 85,
+        size = 0.5,
+        linetype = "dashed",
+        color = "grey20"
+      ) +
+      scale_y_continuous(limits = c(0, max(
+        1.0,
+        max(reactive_objects$selected_rbinded$Concentration)
+      )))
+  })
+
   output$mymap <- renderLeaflet({
     date_time = gsub('-', '', input$month_slider)
     imgPath = paste(projectPath, "/data/tif/Conc.", date_time, ".tif", sep = "")
