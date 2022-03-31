@@ -89,13 +89,13 @@ wells_mlid_param_asmnts = plyr::rename(
 
 #wells_mlid_param_asmnts$ParameterName = "Sampling Well"
 
-wells_mlid_param_asmnts =
-  merge(
-    x = wells_mlid_param_asmnts,
-    y = well_types[, c("Well_Name", "Well_Types")],
-    by = "Well_Name",
-    all.x = TRUE
-  )
+# wells_mlid_param_asmnts =
+#   merge(
+#     x = wells_mlid_param_asmnts,
+#     y = well_types[, c("Well_Name", "Well_Types")],
+#     by = "Well_Name",
+#     all.x = TRUE
+#   )
 wells_mlid_param_asmnts = data.frame(wells_mlid_param_asmnts)
 
 #wells_mlid_param_asmnts = cbind(wells_mlid_param_asmnts$Well_Name, wells_mlid_param_asmnts)
@@ -186,8 +186,7 @@ server <- function(input, output, session) {
     showNotification("observe activate")
     req(input$table_input_rows_selected)
     row_click = input$table_input_rows_selected
-    siteid = wells_mlid_param_asmnts[row_click, "Well_Name"]
-    siteid = wells_mlid_param_asmnts$Well_Name[row_click]
+    siteid =  wells_mlid_param_asmnts[row_click, "Well_Name"]
     reactive_objects$sel_param = wells_mlid_param_asmnts[row_click, "ParameterName"]
     reactive_objects$sel_mlid = siteid
     showNotification(paste(siteid,"clicked"))
@@ -267,7 +266,6 @@ server <- function(input, output, session) {
     )
     
     ori_data$Type = 'Historical record'
-    pred_simple_data = selected_prof_asmnts[c("Well_Name", "do_pct_exc", "ActivityStartDate")]
     total_data <- rbind(ori_data, predict_simple)
     showNotification(typeof(ori_data))
     showNotification(typeof(predict_simple))
