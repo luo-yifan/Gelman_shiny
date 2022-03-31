@@ -269,7 +269,7 @@ server <- function(input, output, session) {
     total_data <- rbind(ori_data, predict_simple)
     showNotification(typeof(ori_data))
     showNotification(typeof(predict_simple))
-    showNotification(colnames(predict_simple))
+    showNotification(str(colnames(predict_simple)))
     # total_data <- rbind(rec_txt, predict_simple_rec)
     # total_data <- rbind(total_data, ori_data)
     # total_data <- rbind(total_data, predict_rm5_rec)
