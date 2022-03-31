@@ -277,7 +277,7 @@ server <- function(input, output, session) {
     # total_data <- rbind(total_data, predict_rm5)
     # total_data <- rbind(total_data, predict_simple)
     
-    total_data = dplyr::filter(total_data, WellName == reactive_objects$sel_mlid) 
+    total_data = dplyr::filter(ori_data, WellName == reactive_objects$sel_mlid) 
     
     reactive_objects$selected_rbinded = total_data
   })
