@@ -239,25 +239,25 @@ server <- function(input, output, session) {
   # Extract profile assessments & profiles_wide for selected site
   observe({
     req(reactive_objects$sel_mlid)
-    selected_prof_asmnts = dplyr::filter(wells_ind_prof_asmnts, WellName == reactive_objects$sel_mlid) 
+    selected_prof_asmnts = dplyr::filter(wells_ind_prof_asmnts, Well_Name == reactive_objects$sel_mlid) 
       
     selected_prof_asmnts = selected_prof_asmnts[order(selected_prof_asmnts$ActivityStartDate),]
     reactive_objects$selected_prof_asmnts = selected_prof_asmnts
-    
-    selected_rec_txt = dplyr::filter(rec_txt, WellName == reactive_objects$sel_mlid) 
-    
-    selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
-    reactive_objects$selected_rec_txt = selected_rec_txt
-    
-    selected_predict_simple = dplyr::filter(predict_simple, WellName == reactive_objects$sel_mlid) 
-    
-    selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
-    reactive_objects$selected_predict_simple = selected_predict_simple
-    
-    selected_predict_simple_rec = dplyr::filter(predict_simple_rec, WellName == reactive_objects$sel_mlid) 
-    
-    selected_predict_simple_rec = selected_predict_simple_rec[order(selected_predict_simple$Date),]
-    reactive_objects$selected_predict_simple_rec = selected_predict_simple_rec
+    # 
+    # selected_rec_txt = dplyr::filter(rec_txt, WellName == reactive_objects$sel_mlid) 
+    # 
+    # selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
+    # reactive_objects$selected_rec_txt = selected_rec_txt
+    # 
+    # selected_predict_simple = dplyr::filter(predict_simple, WellName == reactive_objects$sel_mlid) 
+    # 
+    # selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
+    # reactive_objects$selected_predict_simple = selected_predict_simple
+    # 
+    # selected_predict_simple_rec = dplyr::filter(predict_simple_rec, WellName == reactive_objects$sel_mlid) 
+    # 
+    # selected_predict_simple_rec = selected_predict_simple_rec[order(selected_predict_simple$Date),]
+    # reactive_objects$selected_predict_simple_rec = selected_predict_simple_rec
     
     ori_data = selected_prof_asmnts[c("Well_Name", "do_pct_exc", "ActivityStartDate")]
     ori_data = plyr::rename(
