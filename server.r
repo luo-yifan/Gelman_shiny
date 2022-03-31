@@ -245,10 +245,10 @@ server <- function(input, output, session) {
     # selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
     # reactive_objects$selected_rec_txt = selected_rec_txt
     # 
-    # selected_predict_simple = dplyr::filter(predict_simple, WellName == reactive_objects$sel_mlid) 
-    # 
-    # selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
-    # reactive_objects$selected_predict_simple = selected_predict_simple
+    selected_predict_simple = dplyr::filter(predict_simple, WellName == reactive_objects$sel_mlid)
+
+    selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
+    reactive_objects$selected_predict_simple = selected_predict_simple
     # 
     # selected_predict_simple_rec = dplyr::filter(predict_simple_rec, WellName == reactive_objects$sel_mlid) 
     # 
