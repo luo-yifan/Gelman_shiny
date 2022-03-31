@@ -88,7 +88,7 @@ wells_mlid_param_asmnts = plyr::rename(
 )
 
 #wells_mlid_param_asmnts$ParameterName = "Sampling Well"
-wells_mlid_param_asmnts = data.frame(wells_mlid_param_asmnts)
+
 wells_mlid_param_asmnts =
   merge(
     x = wells_mlid_param_asmnts,
@@ -96,6 +96,7 @@ wells_mlid_param_asmnts =
     by = "Well_Name",
     all.x = TRUE
   )
+wells_mlid_param_asmnts = data.frame(wells_mlid_param_asmnts)
 
 #wells_mlid_param_asmnts = cbind(wells_mlid_param_asmnts$Well_Name, wells_mlid_param_asmnts)
 rec_txt = unique(rec_txt_raw[, c("WellName", "Date", "Concentration")])
@@ -186,6 +187,7 @@ server <- function(input, output, session) {
     req(input$table_input_rows_selected)
     row_click = input$table_input_rows_selected
     siteid = wells_mlid_param_asmnts[row_click, "Well_Name"]
+    siteid = wells_mlid_param_asmnts$Well_Name[row_click]
     reactive_objects$sel_param = wells_mlid_param_asmnts[row_click, "ParameterName"]
     reactive_objects$sel_mlid = siteid
     showNotification(paste(siteid,"clicked"))
@@ -238,7 +240,6 @@ server <- function(input, output, session) {
     selected_prof_asmnts = dplyr::filter(wells_ind_prof_asmnts, Well_Name == reactive_objects$sel_mlid) 
       
     selected_prof_asmnts = selected_prof_asmnts[order(selected_prof_asmnts$ActivityStartDate),]
-    reactive_objects$selected_prof_asmnts = selected_prof_asmnts
     # 
     # selected_rec_txt = dplyr::filter(rec_txt, WellName == reactive_objects$sel_mlid) 
     # 
@@ -266,6 +267,7 @@ server <- function(input, output, session) {
     )
     
     ori_data$Type = 'Historical record'
+    pred_simple_data = selected_prof_asmnts[c("Well_Name", "do_pct_exc", "ActivityStartDate")]
     total_data <- rbind(ori_data, predict_simple)
     showNotification(typeof(ori_data))
     showNotification(typeof(predict_simple))
@@ -282,7 +284,6 @@ server <- function(input, output, session) {
   })
   
   output$ggPlot = renderPlotly({
-    req(reactive_objects$selected_prof_asmnts)
 
     ggplot(reactive_objects$selected_rbinded,
            aes(Date, Concentration)) +
