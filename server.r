@@ -89,13 +89,13 @@ wells_mlid_param_asmnts = plyr::rename(
 
 #wells_mlid_param_asmnts$ParameterName = "Sampling Well"
 
-# wells_mlid_param_asmnts =
-#   merge(
-#     x = wells_mlid_param_asmnts,
-#     y = well_types[, c("Well_Name", "Well_Types")],
-#     by = "Well_Name",
-#     all.x = TRUE
-#   )
+wells_mlid_param_asmnts =
+  merge(
+    x = wells_mlid_param_asmnts,
+    y = well_types[, c("Well_Name", "Well_Types")],
+    by = "Well_Name",
+    all.x = TRUE
+  )
 wells_mlid_param_asmnts = data.frame(wells_mlid_param_asmnts)
 
 #wells_mlid_param_asmnts = cbind(wells_mlid_param_asmnts$Well_Name, wells_mlid_param_asmnts)
@@ -237,18 +237,15 @@ server <- function(input, output, session) {
   observe({
     req(reactive_objects$sel_mlid)
     selected_prof_asmnts = dplyr::filter(wells_ind_prof_asmnts, Well_Name == reactive_objects$sel_mlid) 
-      
-    selected_prof_asmnts = selected_prof_asmnts[order(selected_prof_asmnts$ActivityStartDate),]
     # 
     # selected_rec_txt = dplyr::filter(rec_txt, WellName == reactive_objects$sel_mlid) 
     # 
     # selected_rec_txt = selected_rec_txt[order(selected_rec_txt$Date),]
     # reactive_objects$selected_rec_txt = selected_rec_txt
     # 
-    selected_predict_simple = dplyr::filter(predict_simple, WellName == reactive_objects$sel_mlid)
+    selected_predict_simple = dplyr::filter(predict_simple, Type == 'Five-year prediction')
 
     selected_predict_simple = selected_predict_simple[order(selected_predict_simple$Date),]
-    reactive_objects$selected_predict_simple = selected_predict_simple
     # 
     # selected_predict_simple_rec = dplyr::filter(predict_simple_rec, WellName == reactive_objects$sel_mlid) 
     # 
@@ -266,10 +263,12 @@ server <- function(input, output, session) {
     )
     
     ori_data$Type = 'Historical record'
-    total_data <- rbind(ori_data, predict_simple)
-    showNotification(typeof(ori_data))
-    showNotification(typeof(predict_simple))
-    showNotification(str(colnames(predict_simple)))
+    # total_data <- rbind(ori_data, predict_simple)
+    # showNotification(typeof(ori_data))
+    # showNotification(typeof(predict_simple))
+    # showNotification(str(colnames(predict_simple)))
+    
+    
     # total_data <- rbind(rec_txt, predict_simple_rec)
     # total_data <- rbind(total_data, ori_data)
     # total_data <- rbind(total_data, predict_rm5_rec)
