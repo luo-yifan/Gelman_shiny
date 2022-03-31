@@ -20,6 +20,109 @@ predict_rm5_rec_raw <-
   read.csv(file = "./data/rm5_predict_data_rec.csv")
 predict_rm5_raw <- read.csv(file = "./data/rm5_predict_data.csv")
 
+wells = unique(gelman_data[, c("Bore", "lat", "lon")])
+wells = plyr::rename(
+  wells,
+  c(
+    "lat" = "LatitudeMeasure",
+    "lon" = "LongitudeMeasure",
+    "Bore" = "MonitoringLocationIdentifier"
+  )
+)
+wells$MonitoringLocationName = wells$MonitoringLocationIdentifier
+wells$MonitoringLocationTypeName = "Sampling Wells"
+
+wells_long = unique(gelman_data[, c("Bore", "SampleDate")])
+wells_long = plyr::rename(wells_long, c("Bore" = "MonitoringLocationIdentifier"))
+wells_long = plyr::rename(wells_long, c("SampleDate" = "ActivityStartDate"))
+wells_long$ParameterName = "Sampling Well"
+wells_long$Bore = wells_long$MonitoringLocationIdentifier
+wells_long$ActivityStartDate = as.Date(wells_long$ActivityStartDate, format =
+                                         '%Y-%m-%d')
+wells_long$ActivityIdentifier =  paste(wells_long$MonitoringLocationIdentifier,
+                                       wells_long$ActivityStartDate,
+                                       sep = "_")
+wells_long = data.frame(wells_long)
+
+wells = wells[wells$MonitoringLocationIdentifier %in% wells_long$MonitoringLocationIdentifier, ]
+wells = data.frame(wells)
+
+wells_ind_prof_asmnts = unique(gelman_data[, c("Bore", "SampleDate", "Value", "lat", "lon")])
+wells_ind_prof_asmnts = plyr::rename(
+  wells_ind_prof_asmnts,
+  c(
+    "lat" = "LatitudeMeasure",
+    "lon" = "LongitudeMeasure",
+    "Bore" = "MonitoringLocationName",
+    "SampleDate" = "ActivityStartDate"
+  )
+)
+wells_ind_prof_asmnts$MonitoringLocationIdentifier = wells_ind_prof_asmnts$MonitoringLocationName
+wells_ind_prof_asmnts$ActivityStartDate = as.Date(wells_ind_prof_asmnts$ActivityStartDate, format =
+                                                    '%Y-%m-%d')
+
+wells_ind_prof_asmnts$ActivityIdentifier =
+  paste(
+    wells_ind_prof_asmnts$MonitoringLocationIdentifier,
+    wells_ind_prof_asmnts$ActivityStartDate,
+    sep = "_"
+  )
+
+wells_ind_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$ActivityIdentifier
+                                              %in% wells_long$ActivityIdentifier, ]
+wells_ind_prof_asmnts$Well_Name = wells_ind_prof_asmnts$MonitoringLocationIdentifier
+wells_ind_prof_asmnts = plyr::rename(wells_ind_prof_asmnts, c("Value" =
+                                                                "do_pct_exc"))
+wells_ind_prof_asmnts = data.frame(wells_ind_prof_asmnts)
+
+wells_mlid_param_asmnts = unique(gelman_data[, c("Bore", "Depth2", "Elevation", "lat", "lon")])
+wells_mlid_param_asmnts = plyr::rename(
+  wells_mlid_param_asmnts,
+  c(
+    "Bore" = "Well_Name",
+    "Depth2" = "Depth",
+    "Elevation" = "Elevation",
+    "lat" = "Latitude",
+    "lon" = "Longtitude"
+  )
+)
+
+#wells_mlid_param_asmnts$ParameterName = "Sampling Well"
+wells_mlid_param_asmnts = data.frame(wells_mlid_param_asmnts)
+wells_mlid_param_asmnts =
+  merge(
+    x = wells_mlid_param_asmnts,
+    y = well_types[, c("Well_Name", "Well_Types")],
+    by = "Well_Name",
+    all.x = TRUE
+  )
+
+#wells_mlid_param_asmnts = cbind(wells_mlid_param_asmnts$Well_Name, wells_mlid_param_asmnts)
+rec_txt = unique(rec_txt_raw[, c("WellName", "Date", "Concentration")])
+rec_txt$Date = as.Date(rec_txt$Date, format = '%Y-%m-%d')
+rec_txt$Type = 'RF interpolation'
+rec_txt = data.frame(rec_txt)
+
+predict_simple = unique(predict_simple_raw[, c("WellName", "Date", "Concentration")])
+predict_simple$Date = as.Date(predict_simple$Date, format = '%Y-%m-%d')
+predict_simple$Type = 'Five-year prediction'
+predict_simple = data.frame(predict_simple)
+
+predict_simple_rec = unique(predict_simple_rec_raw[, c("WellName", "Date", "Concentration")])
+predict_simple_rec$Date = as.Date(predict_simple_rec$Date, format = '%Y-%m-%d')
+predict_simple_rec$Type = 'RF prediction'
+predict_simple_rec = data.frame(predict_simple_rec)
+
+predict_rm5_rec = unique(predict_rm5_rec_raw[, c("WellName", "Date", "Concentration")])
+predict_rm5_rec$Date = as.Date(predict_rm5_rec$Date, format = '%Y-%m-%d')
+predict_rm5_rec$Type = 'RF predict validation'
+predict_rm5_rec = data.frame(predict_rm5_rec)
+
+predict_rm5 = unique(predict_rm5_raw[, c("WellName", "Date", "Concentration")])
+predict_rm5$Date = as.Date(predict_rm5$Date, format = '%Y-%m-%d')
+predict_rm5$Type = 'Raw predict validation'
+predict_rm5 = data.frame(predict_rm5)
+
 server <- function(input, output, session) {
   # Loading modal to keep user out of trouble while map draws...
   showModal(
@@ -37,108 +140,7 @@ server <- function(input, output, session) {
     removeModal()
   })
   
-  wells = unique(gelman_data[, c("Bore", "lat", "lon")])
-  wells = plyr::rename(
-    wells,
-    c(
-      "lat" = "LatitudeMeasure",
-      "lon" = "LongitudeMeasure",
-      "Bore" = "MonitoringLocationIdentifier"
-    )
-  )
-  wells$MonitoringLocationName = wells$MonitoringLocationIdentifier
-  wells$MonitoringLocationTypeName = "Sampling Wells"
-  
-  wells_long = unique(gelman_data[, c("Bore", "SampleDate")])
-  wells_long = plyr::rename(wells_long, c("Bore" = "MonitoringLocationIdentifier"))
-  wells_long = plyr::rename(wells_long, c("SampleDate" = "ActivityStartDate"))
-  wells_long$ParameterName = "Sampling Well"
-  wells_long$Bore = wells_long$MonitoringLocationIdentifier
-  wells_long$ActivityStartDate = as.Date(wells_long$ActivityStartDate, format =
-                                           '%Y-%m-%d')
-  wells_long$ActivityIdentifier =  paste(wells_long$MonitoringLocationIdentifier,
-                                         wells_long$ActivityStartDate,
-                                         sep = "_")
-  wells_long = data.frame(wells_long)
-  
-  wells = wells[wells$MonitoringLocationIdentifier %in% wells_long$MonitoringLocationIdentifier, ]
-  wells = data.frame(wells)
-  
-  wells_ind_prof_asmnts = unique(gelman_data[, c("Bore", "SampleDate", "Value", "lat", "lon")])
-  wells_ind_prof_asmnts = plyr::rename(
-    wells_ind_prof_asmnts,
-    c(
-      "lat" = "LatitudeMeasure",
-      "lon" = "LongitudeMeasure",
-      "Bore" = "MonitoringLocationName",
-      "SampleDate" = "ActivityStartDate"
-    )
-  )
-  wells_ind_prof_asmnts$MonitoringLocationIdentifier = wells_ind_prof_asmnts$MonitoringLocationName
-  wells_ind_prof_asmnts$ActivityStartDate = as.Date(wells_ind_prof_asmnts$ActivityStartDate, format =
-                                                      '%Y-%m-%d')
-  
-  wells_ind_prof_asmnts$ActivityIdentifier =
-    paste(
-      wells_ind_prof_asmnts$MonitoringLocationIdentifier,
-      wells_ind_prof_asmnts$ActivityStartDate,
-      sep = "_"
-    )
-  
-  wells_ind_prof_asmnts = wells_ind_prof_asmnts[wells_ind_prof_asmnts$ActivityIdentifier
-                                                %in% wells_long$ActivityIdentifier, ]
-  wells_ind_prof_asmnts$Well_Name = wells_ind_prof_asmnts$MonitoringLocationIdentifier
-  wells_ind_prof_asmnts = plyr::rename(wells_ind_prof_asmnts, c("Value" =
-                                                                  "do_pct_exc"))
-  wells_ind_prof_asmnts = data.frame(wells_ind_prof_asmnts)
-  
-  wells_mlid_param_asmnts = unique(gelman_data[, c("Bore", "Depth2", "Elevation", "lat", "lon")])
-  wells_mlid_param_asmnts = plyr::rename(
-    wells_mlid_param_asmnts,
-    c(
-      "Bore" = "Well_Name",
-      "Depth2" = "Depth",
-      "Elevation" = "Elevation",
-      "lat" = "Latitude",
-      "lon" = "Longtitude"
-    )
-  )
-  
-  #wells_mlid_param_asmnts$ParameterName = "Sampling Well"
-  wells_mlid_param_asmnts = data.frame(wells_mlid_param_asmnts)
-  wells_mlid_param_asmnts =
-    merge(
-      x = wells_mlid_param_asmnts,
-      y = well_types[, c("Well_Name", "Well_Types")],
-      by = "Well_Name",
-      all.x = TRUE
-    )
-  
-  #wells_mlid_param_asmnts = cbind(wells_mlid_param_asmnts$Well_Name, wells_mlid_param_asmnts)
-  rec_txt = unique(rec_txt_raw[, c("WellName", "Date", "Concentration")])
-  rec_txt$Date = as.Date(rec_txt$Date, format = '%Y-%m-%d')
-  rec_txt$Type = 'RF interpolation'
-  rec_txt = data.frame(rec_txt)
-  
-  predict_simple = unique(predict_simple_raw[, c("WellName", "Date", "Concentration")])
-  predict_simple$Date = as.Date(predict_simple$Date, format = '%Y-%m-%d')
-  predict_simple$Type = 'Five-year prediction'
-  predict_simple = data.frame(predict_simple)
-  
-  predict_simple_rec = unique(predict_simple_rec_raw[, c("WellName", "Date", "Concentration")])
-  predict_simple_rec$Date = as.Date(predict_simple_rec$Date, format = '%Y-%m-%d')
-  predict_simple_rec$Type = 'RF prediction'
-  predict_simple_rec = data.frame(predict_simple_rec)
-  
-  predict_rm5_rec = unique(predict_rm5_rec_raw[, c("WellName", "Date", "Concentration")])
-  predict_rm5_rec$Date = as.Date(predict_rm5_rec$Date, format = '%Y-%m-%d')
-  predict_rm5_rec$Type = 'RF predict validation'
-  predict_rm5_rec = data.frame(predict_rm5_rec)
-  
-  predict_rm5 = unique(predict_rm5_raw[, c("WellName", "Date", "Concentration")])
-  predict_rm5$Date = as.Date(predict_rm5$Date, format = '%Y-%m-%d')
-  predict_rm5$Type = 'Raw predict validation'
-  predict_rm5 = data.frame(predict_rm5)
+ 
   
   # Empty reactive values object
   reactive_objects = reactiveValues()
