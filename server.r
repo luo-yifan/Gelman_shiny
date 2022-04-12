@@ -276,32 +276,38 @@ server <- function(input, output, session) {
 
     ggplot(reactive_objects$selected_rbinded,
            aes(Date, Concentration)) +
+
       geom_point(aes(colour = factor(Type)), show.legend = FALSE) +
+      
       geom_hline(
         yintercept = 1,
         size = 0.5,
         linetype = "dashed",
         color = "grey80"
       ) +
+      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 1, alpha = .2, label = "Some text",colour = "red", size = 1.5) + 
       geom_hline(
         yintercept = 4,
         size = 0.5,
         linetype = "dashed",
         color = "grey60"
       ) +
+      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 4, alpha = .2, label = "Some text",colour = "red", size = 1.5) + 
       geom_hline(
         yintercept = 7.2,
         size = 0.5,
         linetype = "dashed",
         color = "grey40"
       ) +
+      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 7.2, alpha = .2,label = "Some text",colour = "red", size = 1.5) + 
       geom_hline(
         yintercept = 85,
         size = 0.5,
         linetype = "dashed",
         color = "grey20"
       ) +
-      scale_y_continuous(limits = c(0, max(
+      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 85, alpha = .2, label = "Some text",colour = "red", size = 1.5) + 
+      scale_y_continuous(name ="dioxane concentration (ppb)", limits = c(0, max(
         1.0,
         max(reactive_objects$selected_rbinded$Concentration)
       )))
