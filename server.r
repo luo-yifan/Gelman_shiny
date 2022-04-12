@@ -285,29 +285,29 @@ server <- function(input, output, session) {
         linetype = "dashed",
         color = "grey80"
       ) +
-      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 1, alpha = .2, label = "Some text",colour = "red", size = 1.5) + 
+      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 1, alpha = .4, label = "Detectable level",colour = "black", size = 3) + 
       geom_hline(
         yintercept = 4,
         size = 0.5,
         linetype = "dashed",
         color = "grey60"
       ) +
-      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 4, alpha = .2, label = "Some text",colour = "red", size = 1.5) + 
+      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 4, alpha = .4, label = "Trigger for response",colour = "black", size = 3) + 
       geom_hline(
         yintercept = 7.2,
         size = 0.5,
         linetype = "dashed",
         color = "grey40"
       ) +
-      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 7.2, alpha = .2,label = "Some text",colour = "red", size = 1.5) + 
+      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 7.2, alpha = .4,label = "Current drinking water standard",colour = "black", size = 3) + 
       geom_hline(
         yintercept = 85,
         size = 0.5,
         linetype = "dashed",
         color = "grey20"
       ) +
-      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 85, alpha = .2, label = "Some text",colour = "red", size = 1.5) + 
-      scale_y_continuous(name ="dioxane concentration (ppb)", limits = c(0, max(
+      annotate("text", x = mean(reactive_objects$selected_rbinded$Date), y = 85, alpha = .4, label = "Previous drinking water standard",colour = "black", size = 3) + 
+      scale_y_continuous(name ="1,4-dioxane concentration (ppb)", limits = c(0, max(
         1.0,
         max(reactive_objects$selected_rbinded$Concentration)
       )))
