@@ -65,11 +65,7 @@ ui <- fluidPage(
                                                  h4("Click a site"),
                                                  div(DT::dataTableOutput("table_input"),style = "font-size:70%")
                                                )),
-                                      tabPanel("Table2222",
-                                               column(
-                                                 12,
-                                                 div(DT::dataTableOutput("table_with_prediction"),style = "font-size:70%")
-                                               )),
+      
                                     )),
                    conditionalPanel(condition = "input.plot_tabs=='Spatial movement'", column(12)),
                    conditionalPanel(condition = "input.plot_tabs=='User guide'",
@@ -105,7 +101,12 @@ ui <- fluidPage(
                fluidRow(column(
                  10,
                  includeMarkdown('./user_guide/user_guide.rmd')
-               )))
+               ))),
+      tabPanel("Table2222",
+               column(
+                 12,
+                 div(DT::dataTableOutput("table_with_prediction"),style = "font-size:70%")
+               )),
     )
   ))
 )
