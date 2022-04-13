@@ -19,6 +19,9 @@ predict_simple_rec_raw <-
 predict_rm5_rec_raw <-
   read.csv(file = "./data/rm5_predict_data_rec.csv")
 predict_rm5_raw <- read.csv(file = "./data/rm5_predict_data.csv")
+analysis_prediction <- read.csv(file = "./data/Gelman_project_table_output.csv")
+
+analysis_prediction = data.frame(analysis_prediction)
 
 wells = unique(gelman_data[, c("Bore", "lat", "lon")])
 wells = plyr::rename(
@@ -169,6 +172,20 @@ server <- function(input, output, session) {
     )
   })
   
+  # Table interface
+  output$table_with_prediction = DT::renderDataTable({
+    DT::datatable(
+      analysis_prediction,
+      selection = 'single',
+      rownames = FALSE,
+      options = list(
+        scrollY = '600px',
+        paging = FALSE,
+        scrollX = TRUE
+      )
+    )
+  })
+  
   # Map marker click (to identify selected site)
   observe({
     req(wells_long)
@@ -277,7 +294,7 @@ server <- function(input, output, session) {
     ggplot(reactive_objects$selected_rbinded,
            aes(Date, Concentration)) +
 
-      geom_point(aes(colour = factor(Type)), show.legend = FALSE) +
+      geom_point(aes(colour = Type), show.legend = FALSE) +
       
       geom_hline(
         yintercept = 1,
