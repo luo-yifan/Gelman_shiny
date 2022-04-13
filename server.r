@@ -19,7 +19,7 @@ predict_simple_rec_raw <-
 predict_rm5_rec_raw <-
   read.csv(file = "./data/rm5_predict_data_rec.csv")
 predict_rm5_raw <- read.csv(file = "./data/rm5_predict_data.csv")
-analysis_prediction <- read.csv(file = "./data/Gelman_project_table_output.csv")
+analysis_prediction <- read.csv(file = "./data/mk_pred.csv")
 
 analysis_prediction = data.frame(analysis_prediction)
 
