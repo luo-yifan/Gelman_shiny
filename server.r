@@ -319,7 +319,6 @@ server <- function(input, output, session) {
     r <- raster(imgPath)
     color_t = rev(
       c(
-        '#03071E',
         '#370617',
         '#6A040F',
         '#9D0208',
@@ -337,8 +336,8 @@ server <- function(input, output, session) {
     pal <-
       colorQuantile(
         color_t,
-        c(1, 4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 , 3000, 5000, 3000000),
-        n = 13,
+        c(4 , 7.2 , 85 , 150 , 280 , 500 , 1000 , 1900 , 3000, 5000, 3000000),
+        n = 12,
         na.color = "transparent"
       )
     
@@ -362,7 +361,6 @@ server <- function(input, output, session) {
         "bottomright",
         colors = color_t,
         labels = c(
-          '<1' ,
           '1-4' ,
           '4-7.2' ,
           '7.2-85' ,
