@@ -40,13 +40,13 @@ ui <- fluidPage(
       "Menu",
       id = "plot_tabs",
       
-      tabPanel("Time series",
+      tabPanel("Well data analysis",
                
                fluidRow(
                  column(
                    6,
                    
-                   conditionalPanel(condition = "input.plot_tabs!='User guide' && input.plot_tabs!='Spatial movement'",
+                   conditionalPanel(condition = "input.plot_tabs!='User guide' && input.plot_tabs!='Plume Projection'",
                                     tabsetPanel(
                                       id = "ui_tab",
                                       tabPanel("Map",
@@ -67,7 +67,7 @@ ui <- fluidPage(
                                                )),
       
                                     )),
-                   conditionalPanel(condition = "input.plot_tabs=='Spatial movement'", column(12)),
+                   conditionalPanel(condition = "input.plot_tabs=='Plume Projection'", column(12)),
                    conditionalPanel(condition = "input.plot_tabs=='User guide'",
                                     column(12))
                  ),
@@ -82,7 +82,7 @@ ui <- fluidPage(
                           
                         )))
                )),
-      tabPanel("Spatial movement",
+      tabPanel("Plume projection",
                fluidRow(
                  column(
                    10,
@@ -102,7 +102,7 @@ ui <- fluidPage(
                  10,
                  includeMarkdown('./user_guide/user_guide.rmd')
                ))),
-      tabPanel("Table2222",
+      tabPanel("Table output",
                column(
                  12,
                  div(DT::dataTableOutput("table_with_prediction"),style = "font-size:70%")
